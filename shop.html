@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="brand.tag">Shop — VIP & Admin</title>
+  <meta name="color-scheme" content="dark light"/>
+  <style>
+    :root{--bg:#0b0f14;--card:#101722;--text:#e5f1ff;--muted:#9ab0c9;--primary:#00ff7f;--accent:#00c2ff;--border:#1d2a3a;--shadow:0 12px 30px rgba(0,0,0,.35);--radius:16px;--ring:0 0 0 3px rgba(0,255,127,.25)}
+    [data-theme="light"]{--bg:#f7fafc;--card:#fff;--text:#0e1a2a;--muted:#5b6b7f;--primary:#0ea5e9;--accent:#16a34a;--border:#e5eaf0;--shadow:0 10px 24px rgba(2,6,23,.08);--ring:0 0 0 3px rgba(14,165,233,.22)}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:radial-gradient(1200px 900px at 10% -10%,rgba(0,194,255,.08),transparent 60%),radial-gradient(1000px 700px at 110% -20%,rgba(0,255,127,.08),transparent 60%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,"Noto Sans","Segoe UI Emoji";line-height:1.6}
+    a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky;top:0;z-index:20;backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--border);background:rgba(6,10,16,.6)}
+    [data-theme="light"] header{background:rgba(255,255,255,.7)}
+    .nav{max-width:980px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900}
+    .logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:var(--shadow);color:#001b1b;font-weight:1000}
+    .logo img{width:100%}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn, select{height:40px;padding:0 12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+    .btn.primary{background:var(--primary);color:#001b1b;border-color:transparent;font-weight:800}
+    .btn:hover{filter:brightness(1.05)}
+
+    main{max-width:980px;margin:0 auto;padding:28px 16px 60px}
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
+    .card{grid-column:span 12;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:16px;box-shadow:var(--shadow)}
+    @media(min-width:760px){.half{grid-column:span 6}}
+    .headline{font-size:clamp(26px,3.6vw,40px);font-weight:1000;margin:0 0 4px}
+    .muted{color:var(--muted)}
+    .list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+    .li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+    .icon{width:22px;height:22px;display:grid;place-items:center;border:1px solid var(--border);border-radius:8px;background:rgba(0,255,127,.1)}
+    .focus{box-shadow:var(--ring)}
+    .price{position: relative;}
+    .price span{position: absolute; top: -10px; right: 0; font-size: 11px; color: red;}
+  </style>
+  <link rel="stylesheet" href="./shop_res.css">
+
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo"><img src="./logo.png" alt=""></div>
+        <div>
+          <div style="font-weight:800">COOLZM</div>
+          <div class="muted" data-i18n="brand.tag">Shop — VIP & Admin</div>
+        </div>
+      </div>
+      <div class="controls">
+        <select id="lang">
+          <option value="uz">UZ</option>
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+        </select>
+        <button id="theme" class="btn" data-i18n="ui.dark">Dark</button>
+        <a href="index.html" class="btn">← <span data-i18n="back">Назад</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="grid">
+      <!-- VIP -->
+      <article class="card half" id="vipCard">
+        <h2 class="headline">VIP</h2>
+        <ul class="list">
+          <li class="li"><div class="icon">★</div><div data-i18n="vip.f1">Больше слотов / префикс в чате</div></li>
+          <li class="li"><div class="icon">⚡</div><div data-i18n="vip.f2">Команды: <span style="border:1px solid var(--border);padding:1px 6px;border-radius:6px">/vipmenu</span>, <span style="border:1px solid var(--border);padding:1px 6px;border-radius:6px">/skins</span></div></li>
+          <li class="li"><div class="icon">🎒</div><div data-i18n="vip.f3">Бонусные кредиты на старте</div></li>
+        </ul>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <p class="price">$24,99<span><del>$29,99</del></span></p>
+          <button class="btn primary" data-buy="VIP" data-i18n="buy">Купить</button>
+        </div>
+      </article>
+
+      <!-- ADMIN -->
+      <article class="card half" id="adminCard">
+        <h2 class="headline">ADMIN</h2>
+        <ul class="list">
+          <li class="li"><div class="icon">🛡</div><div data-i18n="adm.f1">Админ-панель, слежка, mute/kick</div></li>
+          <li class="li"><div class="icon">🧰</div><div data-i18n="adm.f2">Расширенный инвентарь / слоты</div></li>
+          <li class="li"><div class="icon">🏷</div><div data-i18n="adm.f3">Префикс ADMIN в чате</div></li>
+        </ul>
+        <div style="display:flex;gap:8px;margin-top:10px">
+            <p class="price">$62,30<span><del>$79,99</del></span></p>
+          <button class="btn primary" data-buy="ADMIN" data-i18n="buy">Купить</button>
+        </div>
+      </article>
+
+      <!-- MODEL -->
+      <article class="card half" id="adminCard">
+        <h2 class="headline">PLAYER MODEL</h2>
+        <ul class="list">
+          <li class="li"><div class="icon">👽</div><div data-i18n="model.f1">Своя модель игрока</div></li>
+        </ul>
+        <div style="display:flex;gap:8px;margin-top:10px">
+            <p class="price">$12,99<span><del>$19,99</del></span></p>
+          <button class="btn primary" data-buy="ADMIN" data-i18n="buy">Купить</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const DEV_TG = 'Kerellkin'; // без @
+    const $ = (q,c=document)=>c.querySelector(q);
+    const $$ = (q,c=document)=>Array.from(c.querySelectorAll(q));
+
+    // ===== i18n =====
+    const i18n = {
+      uz: {
+        'brand.tag': "Do'kon — VIP & Admin",
+        back: 'Ortga',
+        'ui.dark': 'Dark', 'ui.light': 'Light',
+        'vip.f1': "Ko'proq slot / chat prefiks",
+        'vip.f2': "Buyruqlar: /vipmenu, /skins",
+        'vip.f3': 'Startda bonus kredit',
+        'adm.f1': 'Admin panel, kuzatuv, mute/kick',
+        'adm.f2': 'Kengaytirilgan inventar / slotlar',
+        'adm.f3': "Chatda ADMIN prefiksi",
+        'model.f1': "O'z o'yinchi modeli",
+        buy: 'Sotib olish',
+        order: 'Xarid'
+      },
+      ru: {
+        'brand.tag': 'Shop — VIP & Admin',
+        back: 'Назад',
+        'ui.dark': 'Тёмная', 'ui.light': 'Светлая',
+        'vip.f1': 'Больше слотов / префикс в чате',
+        'vip.f2': 'Команды: /vipmenu, /skins',
+        'vip.f3': 'Бонусные кредиты на старте',
+        'adm.f1': 'Админ-панель, слежка, mute/kick',
+        'adm.f2': 'Расширенный инвентарь / слоты',
+        'adm.f3': 'Префикс ADMIN в чате',
+        'model.f1': "Своя модель игрока",
+        buy: 'Купить',
+        order: 'Покупка'
+      },
+      en: {
+        'brand.tag': 'Shop — VIP & Admin',
+        back: 'Back',
+        'ui.dark': 'Dark', 'ui.light': 'Light',
+        'vip.f1': 'More slots / chat prefix',
+        'vip.f2': 'Commands: /vipmenu, /skins',
+        'vip.f3': 'Bonus credits on start',
+        'adm.f1': 'Admin panel, spectate, mute/kick',
+        'adm.f2': 'Extended inventory / slots',
+        'adm.f3': 'ADMIN prefix in chat',
+        'model.f1': "Own player model",
+        buy: 'Buy',
+        order: 'Purchase'
+      }
+    };
+
+    // ===== State & init =====
+    const state = {
+      theme: localStorage.getItem('theme') || 'dark',
+      lang: localStorage.getItem('lang') || 'ru'
+    };
+
+    function t(key){ return (i18n[state.lang] && i18n[state.lang][key]) || key; }
+
+    function applyTheme(){
+      document.documentElement.setAttribute('data-theme', state.theme);
+      $('#theme').textContent = state.theme==='dark' ? t('ui.dark') : t('ui.light');
+    }
+
+    function applyI18n(){
+      document.documentElement.lang = state.lang;
+      // select state
+      $$('#lang option').forEach(o=>o.selected = (o.value===state.lang));
+      // texts
+      $$('[data-i18n]').forEach(el=>{
+        const k = el.getAttribute('data-i18n');
+        el.innerHTML = t(k);
+      });
+      // title tag (for browsers)
+      document.title = t('brand.tag');
+      // theme button label again (depends on lang)
+      $('#theme').textContent = state.theme==='dark' ? t('ui.dark') : t('ui.light');
+    }
+
+    document.documentElement.setAttribute('data-theme', state.theme);
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      applyI18n(); applyTheme();
+
+      // Theme toggle
+      $('#theme').addEventListener('click',()=>{
+        state.theme = state.theme==='dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', state.theme);
+        applyTheme();
+      });
+
+      // Language switch
+      $('#lang').addEventListener('change', e=>{
+        state.lang = e.target.value;
+        localStorage.setItem('lang', state.lang);
+        applyI18n();
+      });
+
+      // Buy buttons -> Telegram
+      $$('[data-buy]').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const product = btn.dataset.buy;
+          const text = encodeURIComponent(`${t('order')}: ${product}`);
+          const url = `https://t.me/${DEV_TG}?text=${text}`;
+          window.open(url, '_blank');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

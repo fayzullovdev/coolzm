@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Правила сервера — тёмный стиль</title>
+    <style>
+      :root {
+        --bg: #0b0d10; /* Фон страницы */
+        --panel: #101317; /* Плитки/панели */
+        --panel-2: #0f1216; /* Боковое меню */
+        --border: #1b212b; /* Лёгкая рамка */
+        --text: #e6ebf2; /* Основной текст */
+        --muted: #a0a8b6; /* Доп. текст */
+        --link: #79a7ff; /* Акцентные ссылки */
+        --accent: #3b82f6; /* Акцент (цифры слева) */
+        --accent-2: #22d3ee; /* Градиент второго тона */
+        --radius: 16px;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --container: 1200px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 500 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter,
+          Arial, sans-serif;
+        letter-spacing: 0.2px;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+      }
+      
+
+      .app {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 20px;
+        min-height: 100dvh;
+      }
+
+      /* Сайдбар */
+      .sidebar {
+        position: sticky;
+        top: 0;
+        align-self: start;
+        height: 100dvh;
+        padding: 18px;
+        background: var(--panel-2);
+        border-right: 1px solid var(--border);
+      }
+      .brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 6px 10px 18px;
+      }
+      .brand .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        box-shadow: 0 0 18px rgba(59, 130, 246, 0.5);
+      }
+      .brand h1 {
+        font-size: 14px;
+        margin: 0;
+        color: #cdd6e5;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        color: #d3dbe8;
+        background: transparent;
+        border: 1px solid transparent;
+        transition: 0.15s ease;
+      }
+      .nav a:hover {
+        background: #121720;
+        border-color: var(--border);
+      }
+      .nav a.active {
+        background: #151b25;
+        border-color: var(--border);
+        color: #eef3fb;
+      }
+
+      /* Контент */
+      .content {
+        padding: 28px 28px 60px;
+        max-width: var(--container);
+        width: 100%;
+      }
+      .header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+      h2 {
+        font-size: 32px;
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+      }
+
+      .search {
+        position: relative;
+        width: min(420px, 100%);
+      }
+      .search input {
+        width: 100%;
+        padding: 12px 14px 12px 42px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #0e1116;
+        color: var(--text);
+        outline: none;
+        box-shadow: var(--shadow);
+      }
+      .search svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.7;
+      }
+
+      .section {
+        margin-top: 18px;
+      }
+      .section h3 {
+        margin: 18px 0 10px;
+        color: #cdd6e5;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-weight: 800;
+      }
+
+      .stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .rule {
+        display: grid;
+        grid-template-columns: 84px 1fr;
+        gap: 16px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+      .num {
+        height: 64px;
+        width: 64px;
+        align-self: center;
+        justify-self: center;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        font-size: 22px;
+        color: white;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35),
+          inset 0 0 0 4px rgba(255, 255, 255, 0.05);
+      }
+      .rule .title {
+        font-weight: 700;
+        margin-bottom: 6px;
+        font-size: 15px;
+        color: #dfe6f4;
+      }
+      .rule .text {
+        color: var(--muted);
+      }
+      .rule .punish {
+        margin-top: 8px;
+        font-weight: 700;
+      }
+
+      /* Плашка разделителя списка */
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 24px 0 8px;
+        opacity: 0.9;
+      }
+      .divider .line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* Футер */
+      .footer {
+        margin-top: 30px;
+        color: #8e97a6;
+        font-size: 13px;
+      }
+
+      /* Мобилка */
+      @media (max-width: 960px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: static;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+          border-radius: 0 0 var(--radius) var(--radius);
+        }
+        .brand {
+          justify-content: center;
+        }
+        .nav {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .content {
+          padding: 22px;
+        }
+        .rule {
+          grid-template-columns: 64px 1fr;
+        }
+        .num {
+          height: 56px;
+          width: 56px;
+          font-size: 20px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="./rules_res.css">
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="dot"></span>
+          <h1>Правила проекта</h1>
+        </div>
+        <nav class="nav" id="sideNav">
+          <a href="./index.html">← Назад</a>
+          <a href="#game" class="active">Игровой процесс</a>
+          <a href="#chat">Общение</a>
+          <a href="#admin">Для администрации</a>
+          <a href="#misc">Прочее</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <div class="header">
+          <h2 id="title">Игровой процесс</h2>
+          <label class="search" title="Поиск по правилам">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.5 19a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Zm11 1-6-6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            <input
+              id="search"
+              placeholder="Поиск: название, наказание, номер…"
+            />
+          </label>
+        </div>
+
+        <!-- Раздел 1: Игровой процесс -->
+        <section id="game" class="section">
+          <h3>Игровой процесс</h3>
+          <div class="stack" data-section-title="Игровой процесс">
+            <article class="rule" data-number="1.1">
+              <div class="num">1.1</div>
+              <div>
+                <div class="title">
+                  Запрещено хранение/использование любого ПО, предоставляющего
+                  преимущество над другими игроками.
+                </div>
+                <div class="text">
+                  Использование, хранение, наличие активных подписок на читы,
+                  которые предоставляет преимущество над другими пользователями
+                  сервера.
+                </div>
+                <div class="punish">
+                  <a class="link" href="#">Бан на 60 дней.</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="1.2">
+              <div class="num">1.2</div>
+              <div>
+                <div class="title">Отказ от проверки на читы</div>
+                <div class="text">
+                  Выход с сервера после вызова на проверку, отказ от проверки на
+                  читы в голосовом либо текстовом чате сервера, не
+                  предоставление администратору своих контактных данных (Discord
+                  / Telegram) в течении 180 секунд с момента вызова на проверку,
+                  предоставление недействительных контактных данных либо
+                  контактных данных другого человека. После закрытия CS 1.6
+                  проверка может не проводится по решению администрации.
+                </div>
+                <div class="punish"><a href="#">бан на 60 дней. </a></div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="1.3">
+              <div class="num">1.3</div>
+              <div>
+                <div class="title">Использование/хранение скриптов</div>
+                <div class="text">
+                  Использование/хранение скриптов, триггеров, ahk, скриптовых
+                  программ (ErScripts и так далее).
+                </div>
+                <div class="punish"><a href="#">бан от 15 до 30 дней.</a></div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="1.4">
+              <div class="num">1.4</div>
+              <div>
+                <div class="title">Обход блокировки и мута.</div>
+                <div class="text">
+                  Осуществление обхода блокировок, мутов любыми средствами
+                  запрещено.
+                </div>
+                <div class="punish">
+                  Бан/Мут на аккаунт с изначальной блокировкой и на тот с
+                  помощью которого осуществлялся обход блокировки, сроком
+                  превышающий в два раза первоначальную блокировку.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="1.5">
+              <div class="num">1.5</div>
+              <div>
+                <div class="title">Признание в использовании стороннего ПО</div>
+                <div class="text">
+                  Признание игрока на сервере в использовании стороннего ПО даже
+                  в шуточной форме может привести в блокировке
+                </div>
+                <div class="punish">предупреждение ➤ бан на 30 дней</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Раздел 2: Общение -->
+        <section id="chat" class="section">
+          <h3>Общение</h3>
+          <div class="stack" data-section-title="Общение">
+            <article class="rule" data-number="2.1">
+              <div class="num">2.1</div>
+              <div>
+                <div class="title">Оскорбления, буллинг и угрозы</div>
+                <div class="text">
+                  Оскорбления, буллинг и угрозы в адрес конкретного игрока
+                  Coolzm в голосовом либо текстовом чате сервера.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 1 часа до 3 часов после предупреждения..
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.2">
+              <div class="num">2.2</div>
+              <div>
+                <div class="title">Оскорбление родных</div>
+                <div class="text">
+                  Оскорбление родных, а также любое их упоминание в негативном
+                  ключе в голосовом либо текстовом чате сервера.
+                </div>
+                <div class="punish">
+                  Наказание мут на 8 часов без предупреждений.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.3">
+              <div class="num">2.3</div>
+              <div>
+                <div class="title">Токсичное и неадекватное поведение</div>
+                <div class="text">
+                  Проявление токсического поведения как в текстовых, так и в
+                  голосовых чатах, а также неадекватное поведение и
+                  высказывания.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 1 часа до 3 часов после предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.4">
+              <div class="num">2.4</div>
+              <div>
+                <div class="title">
+                  Конфликты на почве политики, религии, расы, ориентации
+                </div>
+                <div class="text">
+                  Участие в конфликтах на на тему политики, религии, расы,
+                  ориентации в текстовом или голосовом чате сервера.
+                </div>
+                <div class="punish">
+                  Наказание: мут 8 часов после предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.5">
+              <div class="num">2.5</div>
+              <div>
+                <div class="title">
+                  Пропаганда запрещенных объединений и их идей
+                </div>
+                <div class="text">
+                  Пропаганда нацизма, терроризма, прославление их идей,
+                  использование их символики в текстовом или голосовом чате, а
+                  также в профиле.
+                </div>
+                <div class="punish">
+                  Наказание: бан до 7 дней без предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.6">
+              <div class="num">2.6</div>
+              <div>
+                <div class="title">Провокации на нарушение правил</div>
+                <div class="text">
+                  ППровокация в голосовом либо текстовом чате других игроков на
+                  нарушение правил проекта, конфликты и так далее.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 1 часа до 3 часов после предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.7">
+              <div class="num">2.7</div>
+              <div>
+                <div class="title">Спам</div>
+                <div class="text">
+                  Спам в любом чате, включая голосовой, спамом считается более 3
+                  схожих сообщений за короткое время.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 1 часа до 3 часов после предупреждения, если
+                  спам был длительным (более 7 сообщений) мут выдается без
+                  предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.8">
+              <div class="num">2.8</div>
+              <div>
+                <div class="title">
+                  Не грубое оскорбление проекта/администрации
+                </div>
+                <div class="text">
+                  Не грубые оскорбления проекта/администрации или проявление
+                  неуважения.
+                </div>
+                <div class="punish">
+                  Наказание: мут на 8 часов без предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.9">
+              <div class="num">2.9</div>
+              <div>
+                <div class="title">Реклама посторонних ресурсов</div>
+                <div class="text">
+                  Реклама посторонних ресурсов в голосовом либо текстовом чате.
+                </div>
+                <div class="punish">
+                  Наказание: мут на 8 часов после предупреждения, если реклама
+                  была длительной мут выдается без предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.10">
+              <div class="num">2.10</div>
+              <div>
+                <div class="title">Выдача себя за администрацию</div>
+                <div class="text">
+                  Нельзя выдавать себя за администрацию проекта, если вы не
+                  являетесь ее частью, вызывать игроков на проверку, угрожать
+                  баном/мутом от своего лица.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 3 до 6 часов после предупреждения, если
+                  нарушение было длительным или имело последствия для игроков
+                  мут выдается без предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.11">
+              <div class="num">2.11</div>
+              <div>
+                <div class="title">Флуд и шумы в микрофон</div>
+                <div class="text">
+                  Флуд, громкие крики, стоны, помехи, сильный шум от ПК и прочие
+                  нечленораздельные звуки или плохое качество микрофона мешающим
+                  игрокам на сервере.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 1 часа до 3 часов после предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.12">
+              <div class="num">2.12</div>
+              <div>
+                <div class="title">Программы для изменения голоса</div>
+                <div class="text">
+                  Использование программ для изменения голоса по типу Voicemod.
+                </div>
+                <div class="punish">
+                  Наказание: мут на 4 часа после предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.13">
+              <div class="num">2.13</div>
+              <div>
+                <div class="title">
+                  Программы для воспроизведения музыки/звуков в микрофон
+                </div>
+                <div class="text">
+                  Использование программ для воспроизведения музыки/звуков по
+                  типу Soundpad.
+                </div>
+                <div class="punish">
+                  Наказание: мут на 4 часа без предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.14">
+              <div class="num">2.14</div>
+              <div>
+                <div class="title">Попрошайничество</div>
+                <div class="text">
+                  Многократное попрошайничество чего-либо на сервере от
+                  игроков/администраторов.
+                </div>
+                <div class="punish">
+                  наказание: мут от 1 до 3 часов после предупреждения.
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="2.15">
+              <div class="num">2.15</div>
+              <div>
+                <div class="title">
+                  Запрещено критиковать действия администрации
+                </div>
+                <div class="text">
+                  Если вы считаете, что администратор профнепригоден, или же
+                  действует не по правилам проекта, вы можете написать жалобу на
+                  администратора, а не устраивать скандал на сервере, мешая
+                  другим игрокам.
+                </div>
+                <div class="punish">
+                  Наказание: мут от 1 до 3 часов после предупреждения.
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Раздел 3: Для администрации -->
+        <section id="admin" class="section">
+          <h3>Для администрации</h3>
+          <div class="stack" data-section-title="Для администрации">
+            <article class="rule" data-number="3.1">
+              <div class="num">3.1</div>
+              <div>
+                <div class="title">Злоупотребление панелью</div>
+                <div class="text">
+                  Запрещается злоупотреблять возможностями панели — нельзя
+                  чрезмерно часто наказывать одного игрока шлепками, ослеплением
+                  и так далее, создавая неудобства и засоряя чат.
+                </div>
+                <div class="punish">
+                  Наказание: выговор или снятие(заморозка прав).
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.2">
+              <div class="num">3.2</div>
+              <div>
+                <div class="title">Бездействие при нарушениях</div>
+                <div class="text">
+                  Нельзя оставаться бездействующим в случае нарушений.
+                  Администрация обязана обеспечивать порядок и комфорт для
+                  игроков.
+                </div>
+                <div class="punish">
+                  Наказание: выговор (только для наборных модераторов).
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.3">
+              <div class="num">3.3</div>
+              <div>
+                <div class="title">Халатность и пренебрежение</div>
+                <div class="text">
+                  Запрещается халатное или пренебрежительное отношение к игрокам
+                  или проекту.
+                </div>
+                <div class="punish">
+                  Наказание: выговор или снятие(заморозка).
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.4">
+              <div class="num">3.4</div>
+              <div>
+                <div class="title">Выдача наказание без предупреждения</div>
+                <div class="text">
+                  Выдача наказание без предупреждения за правило, которое
+                  предусматривает такое.
+                </div>
+                <div class="punish">Наказание: выговор.</div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.5">
+              <div class="num">3.5</div>
+              <div>
+                <div class="title">Выдача наказания по непонятной причине</div>
+                <div class="text">
+                  При любом наказании необходимо указывать четкую и конкретную
+                  причину.
+                </div>
+                <div class="punish">
+                  Наказание: выговор (по решению старшей администрации).
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.6">
+              <div class="num">3.6</div>
+              <div>
+                <div class="title">Нарушение новых правил</div>
+                <div class="text">
+                  При нарушении нового правила необходимо уведомить игрока об
+                  этом. При повторном нарушении - принять меры.
+                </div>
+                <div class="punish">
+                  Наказание: выговор (по решению старшей администрации).
+                </div>
+              </div>
+            </article>
+
+            <article class="rule" data-number="3.7">
+              <div class="num">3.7</div>
+              <div>
+                <div class="title">Требования к администратору</div>
+                <div class="text">
+                  Администратор обязан знать правила, быть адекватным и
+                  контролировать свои действия и высказывания. За нарушение
+                  правил проекта администратор получает не только наказание,
+                  которое предусмотрено пунктом правил но и выговор.
+                </div>
+                <div class="punish">Наказание: выговор.</div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.8">
+              <div class="num">3.8</div>
+              <div>
+                <div class="title">Последствия серьезных нарушений</div>
+                <div class="text">
+                  При серьезных нарушениях со стороны администратора, права
+                  могут быть полностью сняты.
+                </div>
+                <div class="punish">Наказание: снятие(заморозка).</div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.9">
+              <div class="num">3.9</div>
+              <div>
+                <div class="title">Грубые нарушения</div>
+                <div class="text">
+                  В случае грубых нарушений правил со стороны администратора,
+                  его права будут приостановлены или полностью удалены.
+                  Разблокировка функций стоит 300 рублей и оплачивается с
+                  баланса сайта. При повторной заморозке сумма оплаты может
+                  увеличиваться.
+                </div>
+                <div class="punish">Наказание: снятие(заморозка).</div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.10">
+              <div class="num">3.10</div>
+              <div>
+                <div class="title">Выдача наказаний</div>
+                <div class="text">
+                  Администратор обязан выдавать наказания строго по правилам
+                  проекта — не превышая и не занижая сроки.
+                </div>
+                <div class="punish">
+                  Наказание: 1-е нарушение - предупреждение, 2-е нарушение -
+                  выговор.
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.11">
+              <div class="num">3.11</div>
+              <div>
+                <div class="title">Мут в соответствующем чате</div>
+                <div class="text">
+                  Наказание в виде мута может быть выдано только в том чате где
+                  произошло нарушение Если нарушение повторяется в другом чате
+                  администратор вправе выдать наказание без предупреждения.
+                </div>
+                <div class="punish">
+                  
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.12">
+              <div class="num">3.12</div>
+              <div>
+                <div class="title">Несоблюдение правил проведения проверки на читы</div>
+                <div class="text">
+                  Администратор обязан соблюдать все правила из категории “Правила проведения проверки на читы”, уметь проверять на читы и вести себя профессионально.
+                </div>
+                <div class="punish">
+                  Наказание: от 1 выговора до ЧСП (по решению старшей администрации, в зависимости от тяжести нарушения).
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="3.13">
+              <div class="num">3.13</div>
+              <div>
+                <div class="title">Полномочия старшей администрации</div>
+                <div class="text">
+                  Старшая администрация может выдавать/снимать наказание на свое усмотрение, отклоняясь от заданных правил если того требует ситуация.
+                </div>
+                <div class="punish">
+
+                </div>
+              </div>
+            </article>
+          
+          </div>
+        </section>
+
+        <!-- Раздел 4: Прочее -->
+        <section id="misc" class="section">
+          <h3>Прочее</h3>
+          <div class="stack" data-section-title="Прочее">
+            <article class="rule" data-number="4.1">
+              <div class="num">4.1</div>
+              <div>
+                <div class="title">Слив личной информации</div>
+                <div class="text">Слив любой информации о игроке без его разрешения</div>
+                <div class="punish">Наказание: бан от 1 дня за несерьезный слив, бан от 30 дней за серьезный слив (в крайнем случае ЧСП).</div>
+              </div>
+            </article>
+            <article class="rule" data-number="4.2">
+              <div class="num">4.2</div>
+              <div>
+                <div class="title">ЧСП (черный список проекта)</div>
+                <div class="text">Игрок может быть занесен в черный список проекта (ЧСП) за особо серьезные нарушения направленные против проекта или его администрации. <br>
+- Основания для занесения в ЧСП:
+- Явное неуважение/оскорбления к руководству и идеологии проекта <br>
+- Оскорбления родных наборной администрации<br>
+- Нанесение ущерба проекту и его репутации<br>
+- Нарушение исключения из пункта правил 1.6<br>
+- Серьезный слив личной информации из пункта правил 5.1<br>
+- Нарушение пункта правил 7.7 (нанесения вреда проверяемому)<br>
+- По решению старшей администрации<br>
+- Скам</div>
+                <div class="punish">Наказание: бан навсегда</div>
+              </div>
+            </article>
+            <article class="rule" data-number="4.3">
+              <div class="num">4.3</div>
+              <div>
+                <div class="title">Прецедентная система наказаний</div>
+                <div class="text">На проекте действует прецедентная система: наказания могут выносится даже при отсутствии конкретного пункта в правилах, после чего соответствующий пункт будет добавлен.</div>
+                <div class="punish">
+
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="4.3">
+              <div class="num">4.3</div>
+              <div>
+                <div class="title">Повторные нарушения</div>
+                <div class="text">При повторном нарушении одного и того же пункта правил наказание может быть увеличено, а также выдано без предупреждение.</div>
+                <div class="punish">
+                  
+                </div>
+              </div>
+            </article>
+            <article class="rule" data-number="4.4">
+              <div class="num">4.4</div>
+              <div>
+                <div class="title">Множественные нарушения</div>
+                <div class="text">Множественные нарушения различных правил проекта могут привести к тому, что наказания за все виды нарушений будут даваться без предупреждений.</div>
+                <div class="punish">
+                  
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Раздел 5: JAIL -->
+        
+
+        <!-- Раздел 6: Чат на сайте -->
+        
+
+        <div class="footer">
+          
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Активный пункт меню при прокрутке
+      const sections = [...document.querySelectorAll("main .section")];
+      const sideLinks = [...document.querySelectorAll("#sideNav a")];
+      const title = document.getElementById("title");
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          const id = visible.target.id;
+          sideLinks.forEach((a) =>
+            a.classList.toggle("active", a.getAttribute("href") === "#" + id)
+          );
+          const t = visible.target.querySelector("[data-section-title]");
+          if (t) title.textContent = t.getAttribute("data-section-title");
+        },
+        { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.2, 0.5, 0.8, 1] }
+      );
+      sections.forEach((s) => io.observe(s));
+
+      // Поиск по правилам
+      const input = document.getElementById("search");
+      input.addEventListener("input", () => {
+        const q = input.value.toLowerCase().trim();
+        document.querySelectorAll(".rule").forEach((card) => {
+          const text = card.innerText.toLowerCase();
+          card.style.display = text.includes(q) ? "" : "none";
+        });
+      });
+
+      // Год в футере
+      document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
