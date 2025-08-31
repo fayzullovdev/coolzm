@@ -1,0 +1,97 @@
+/* ≤420px */
+@media (max-width: 420px) {
+  /* каркас */
+  .app { gap: 12px; }
+  .sidebar {
+    padding: 14px;
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+
+  /* бренд */
+  .brand { padding: 4px 6px 12px; gap: 8px; }
+  .brand h1 { font-size: 12px; letter-spacing: .5px; }
+
+  /* меню */
+  .nav {
+    display: grid;
+    grid-template-columns: 1fr;      /* в один столбец */
+    gap: 6px;
+  }
+  .nav a {
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  /* контент */
+  .content { padding: 16px; }
+  .header {
+    gap: 10px;
+    flex-direction: column;          /* заголовок над поиском */
+    align-items: stretch;
+  }
+  h2 { font-size: 24px; }
+
+  /* поиск */
+  .search { width: 100%; }
+  .search input {
+    padding: 10px 12px 10px 40px;
+    border-radius: 10px;
+  }
+  .search svg { left: 10px; }
+
+  /* блоки правил */
+  .stack { gap: 10px; }
+  .rule {
+    grid-template-columns: 56px 1fr;
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .num {
+    width: 48px; height: 48px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+  .rule .title { font-size: 14px; margin-bottom: 4px; }
+  .rule .text  { font-size: 14px; }
+  .rule .punish { margin-top: 6px; }
+
+  /* разделители */
+  .section { margin-top: 14px; }
+  .section h3 {
+    margin: 12px 0 8px;
+    font-size: 11px;
+    letter-spacing: .11em;
+  }
+  .divider { margin: 18px 0 8px; }
+
+  /* футер */
+  .footer {
+    margin-top: 22px;
+    font-size: 12px;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ≤375px — ещё компактнее */
+@media (max-width: 375px) {
+  .sidebar { padding: 12px; }
+  .nav a { padding: 9px 10px; }
+
+  .content { padding: 14px; }
+  h2 { font-size: 22px; }
+
+  .rule {
+    grid-template-columns: 52px 1fr;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .num { width: 44px; height: 44px; font-size: 17px; }
+
+  .rule .title { font-size: 13.5px; }
+  .rule .text  { font-size: 13.5px; }
+
+  .search input { padding: 9px 10px 9px 38px; }
+  .search svg { left: 9px; }
+
+  .brand h1 { font-size: 11px; }
+}

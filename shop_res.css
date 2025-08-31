@@ -1,0 +1,75 @@
+/* ≤420px */
+@media (max-width: 420px) {
+  /* шапка */
+  .nav{
+    grid-template-columns: 1fr auto;   /* бренд слева, контролы справа */
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .brand{ gap: 10px; }
+  .logo{ width: 32px; height: 32px; border-radius: 10px; }
+  .controls{ gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .btn, select{
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  /* контент и карточки */
+  main{ padding: 20px 12px 44px; }
+  .grid{ gap: 12px; }                    /* плотнее сетка */
+  .card{
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .headline{ font-size: 22px; }
+
+  /* списки */
+  .list{ gap: 6px; }
+  .li{ grid-template-columns: 20px 1fr; gap: 6px; }
+  .icon{ width: 20px; height: 20px; border-radius: 6px; }
+
+  /* цена + зачёркнутая старая */
+  .price{
+    margin: 0;
+    font-size: 18px;
+    line-height: 1;
+  }
+  .price span{
+    position: static;        /* переносим рядом, без абсолютного позиционирования */
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 12px;
+    vertical-align: baseline;
+  }
+}
+
+/* ≤375px — ещё компактнее и в 1 колонку в шапке */
+@media (max-width: 375px) {
+  .nav{
+    grid-template-columns: 1fr;  /* контролы под брендом */
+    row-gap: 8px;
+  }
+  .controls{
+    justify-content: stretch;
+    gap: 6px;
+  }
+  .controls .btn,
+  .controls select{
+    flex: 1 1 100%;
+    width: 100%;                /* по кнопке в строку */
+  }
+
+  .logo{ width: 28px; height: 28px; }
+  .btn, select{ height: 34px; font-size: 13px; }
+
+  main{ padding: 16px 10px 40px; }
+  .card{ padding: 12px; border-radius: 12px; }
+  .headline{ font-size: 20px; }
+
+  .li{ grid-template-columns: 18px 1fr; }
+  .icon{ width: 18px; height: 18px; }
+
+  .price{ font-size: 17px; }
+}
