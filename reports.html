@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>COOLZM — Отправить жалобу</title>
+  <title>COOLZM — Жалобы через Telegram-бота</title>
   <meta name="color-scheme" content="dark light"/>
   <style>
-    /* ======= ТЕМА как на сайте ======= */
     :root{
       --bg:#0b0f14; --card:#101722; --text:#e5f1ff; --muted:#9ab0c9;
       --primary:#00ff7f; --accent:#00c2ff; --border:#1d2a3a;
@@ -33,52 +32,39 @@
 
     header{position:sticky;top:0;z-index:10;backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--border);background:rgba(6,10,16,.6)}
     [data-theme="light"] header{background:rgba(255,255,255,.7)}
-    .nav{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}
+    .nav{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
     .brand{display:flex;align-items:center;gap:12px;font-weight:900}
     .logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:var(--shadow);color:#001b1b;font-weight:1000}
     .logo img{width:100%;border-radius:12px}
     .controls{display:flex;gap:8px;align-items:center}
-    .btn, select, input, textarea{
-      padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);outline:none
-    }
-    input,select,textarea{width:100%}
-    .btn{height:40px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-    .btn.primary{background:var(--primary);color:#001b1b;border-color:transparent;font-weight:800}
+    .btn{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:40px}
     .btn:hover{filter:brightness(1.05)}
-    .muted{color:var(--muted)}
-    .tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:rgba(0,255,127,.08);border-radius:999px;padding:4px 8px;font-size:.85rem}
 
     main{max-width:980px;margin:0 auto;padding:24px 16px 60px}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .card{grid-column:span 12;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:16px;box-shadow:var(--shadow)}
-    @media(min-width:760px){.half{grid-column:span 6}}
+    .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:24px;box-shadow:var(--shadow)}
+    .headline{font-size:clamp(26px,3.6vw,40px);font-weight:1000;margin:0 0 12px}
+    .sub{color:var(--muted);margin:0 0 20px}
 
-    .headline{font-size:clamp(26px,3.6vw,40px);font-weight:1000;margin:0 0 4px}
-    .sub{color:var(--muted);margin:0}
+    .notice{border:1px dashed var(--border);border-radius:12px;padding:12px;display:grid;gap:10px}
+    .schedule{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .status{padding:6px 10px;border-radius:999px;border:1px solid var(--border)}
+    .status.open{background:rgba(0,255,127,.1)}
+    .status.closed{background:rgba(255,80,80,.12)}
 
-    .rows{display:grid;gap:12px}
-    .row2{display:grid;gap:12px}
-    @media(min-width:680px){.row2{grid-template-columns:1fr 1fr}}
-    label{display:grid;gap:8px;font-weight:700}
-    small{color:var(--muted)}
-    textarea{min-height:120px;resize:vertical}
-
-    .ok{border:1px solid var(--border);background:rgba(0,255,127,.08);padding:10px;border-radius:10px;display:none}
-    .err{border:1px solid var(--border);background:rgba(255,80,80,.12);padding:10px;border-radius:10px;display:none}
-
-    /* мини-список «мои жалобы» */
-    .list{display:grid;gap:10px}
-    .item{border:1px solid var(--border);border-radius:12px;padding:12px;background:linear-gradient(180deg,rgba(0,255,127,.04),transparent),var(--card)}
-    .mutedLine{color:var(--muted);font-size:.92rem}
-
-    /* узкие экраны */
+    /* ===== Мобильные стили ===== */
     @media (max-width:420px){
-      .nav{grid-template-columns:1fr auto}
-      .controls:last-child{grid-column:1/-1;justify-self:end}
+      .nav{grid-template-columns:1fr; gap:8px}
+      .controls{justify-content:flex-start; flex-wrap:wrap}
+      .btn{height:auto; padding:10px 12px}
+      .headline{font-size:24px}
+      .card{padding:16px}
     }
-    @media (max-width:375px){
-      .nav{grid-template-columns:1fr}
-      .controls{justify-content:flex-start}
+    @media (max-width:360px){
+      .brand{gap:8px}
+      .logo{width:32px;height:32px;border-radius:10px}
+      .headline{font-size:22px}
+      .btn{font-size:14px; padding:8px 10px}
+      main{padding:20px 12px 48px}
     }
   </style>
 </head>
@@ -89,100 +75,62 @@
         <div class="logo"><img src="./logo.png" alt=""></div>
         <div>
           <div style="font-weight:800">COOLZM</div>
-          <div class="muted">Отправка жалобы</div>
+          <div class="muted">Жалобы</div>
         </div>
       </div>
       <div class="controls">
         <button id="theme" class="btn">Dark</button>
         <a href="./index.html" class="btn">← На сайт</a>
-        <a href="./admin.html" class="btn">Админ-панель</a>
       </div>
     </nav>
   </header>
 
   <main>
     <section class="card">
-      <h1 class="headline">Форма жалобы</h1>
-      <p class="sub">Заполните поля. После отправки запись появится у администраторов в <a href="./admin.html">панели</a>.</p>
-    </section>
+      <h1 class="headline">Отправка жалоб</h1>
+      <p class="sub">Теперь подача жалоб через эту страницу недоступна.</p>
+      <p>Все жалобы принимаются <b>только через нашего Telegram-бота</b>. Используйте его, чтобы оформить жалобу на игрока.</p>
 
-    <section class="grid">
-      <article class="card half">
-        <form id="form" class="rows" autocomplete="on">
-          <div class="row2">
-            <label>Ник игрока* <input id="player" placeholder="Ник нарушителя" required></label>
-            <label>SteamID/профиль <input id="steam" placeholder="STEAM_0:X:XXXXXXX или ссылка"></label>
-          </div>
+      <div class="notice">
+        <div><b>Время приёма жалоб:</b> ежедневно <b>с 07:00 до 15:00</b> по Ташкенту (UTC+5) и <b>с 05:00 до 13:00</b> по Москве (UTC+3).</div>
+        <div class="schedule">
+          <span class="muted">Статус сейчас:</span>
+          <span id="status" class="status">—</span>
+          <span id="now" class="muted"></span>
+        </div>
+      </div>
 
-          <div class="row2">
-            <label>Сервер
-              <select id="server">
-                <option value="Public">Public</option>
-                <option value="Zombie">Zombie</option>
-                <option value="Unknown">Не знаю</option>
-              </select>
-            </label>
-            <label>Категория
-              <select id="category">
-                <option value="Читы">Читы</option>
-                <option value="Оскорбления/токсичность">Оскорбления/токсичность</option>
-                <option value="Реклама">Реклама</option>
-                <option value="Мешает игре/блокирует">Мешает игре/блокирует</option>
-                <option value="Другое">Другое</option>
-              </select>
-            </label>
-          </div>
-
-          <label>Причина / описание* 
-            <textarea id="reason" placeholder="Опишите ситуацию: карта, время раунда, что случилось…" required></textarea>
-          </label>
-
-          <label>Доказательства (ссылки)
-            <textarea id="evidence" placeholder="Ссылки на демо/скриншоты/видео. Можно несколько через пробел/новую строку."></textarea>
-            <small>Пример: https://youtu.be/… https://imgur.com/…</small>
-          </label>
-
-          <div class="row2">
-            <label>Ваш ник/контакт 
-              <input id="reporter" placeholder="Ник, Discord/Telegram (не обязательно)">
-            </label>
-            <label>Запомнить меня
-              <select id="remember">
-                <option value="1">Да</option>
-                <option value="0">Нет</option>
-              </select>
-            </label>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn primary" type="submit">Отправить жалобу</button>
-            <button class="btn" type="button" id="clear">Очистить</button>
-          </div>
-
-          <div id="ok" class="ok"></div>
-          <div id="err" class="err"></div>
-
-          <small class="muted">* — обязательные поля. Отправляя жалобу, вы соглашаетесь на передачу данных администраторам проекта.</small>
-        </form>
-      </article>
-
-      <article class="card half">
-        <h3 style="margin:0 0 8px">Мои последние жалобы (на этом устройстве)</h3>
-        <div id="mine" class="list"></div>
-        <div id="mineEmpty" class="muted">Пока нет записей.</div>
-      </article>
+      <p>Ссылка на Telegram-бота: <a href="https://t.me/coolzmreport_bot" target="_blank">@coolzmreport_bot</a></p>
     </section>
   </main>
 
   <script>
-  // ====== ТЕМА ======
   const $ = (q,c=document)=>c.querySelector(q);
-  const $$ = (q,c=document)=>Array.from(c.querySelectorAll(q));
   const state = { theme: localStorage.getItem('theme') || 'dark' };
   function applyTheme(){
     document.documentElement.setAttribute('data-theme', state.theme);
     $('#theme').textContent = state.theme==='dark' ? 'Dark' : 'Light';
   }
+  function tzTime(tz){
+    return new Intl.DateTimeFormat('ru-RU',{ timeZone: tz, hour:'2-digit', minute:'2-digit', second:'2-digit' }).format(new Date());
+  }
+  function isOpenTashkent(){
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('ru-RU',{ timeZone:'Asia/Tashkent', hour:'2-digit', minute:'2-digit', hour12:false }).formatToParts(now);
+    const hh = Number(parts.find(p=>p.type==='hour').value);
+    const mm = Number(parts.find(p=>p.type==='minute').value);
+    const minutes = hh*60 + mm;
+    return minutes >= 7*60 && minutes < 15*60; // 07:00–14:59
+  }
+  function renderStatus(){
+    const open = isOpenTashkent();
+    const st = $('#status');
+    const now = $('#now');
+    st.textContent = open ? 'Приём ОТКРЫТ' : 'Приём ЗАКРЫТ';
+    st.className = 'status ' + (open ? 'open' : 'closed');
+    now.textContent = ` (Ташкент: ${tzTime('Asia/Tashkent')}, Москва: ${tzTime('Europe/Moscow')})`;
+  }
+
   document.addEventListener('DOMContentLoaded', ()=>{
     applyTheme();
     $('#theme').addEventListener('click',()=>{
@@ -190,160 +138,10 @@
       localStorage.setItem('theme', state.theme);
       applyTheme();
     });
+
+    renderStatus();
+    setInterval(renderStatus, 1000);
   });
-
-  // ====== ХРАНИЛИЩЕ ЖАЛОБ (один объект) ======
-  const KEY = 'coolzm_reports_v1';
-  const Reports = {
-    load(){
-      try{
-        const raw = JSON.parse(localStorage.getItem(KEY) || '[]');
-        if(Array.isArray(raw)){ // миграция со старого массива
-          const lastId = raw.reduce((m,r)=>Math.max(m, Number(r.id||0)), 0);
-          return { version:1, lastId, items: raw };
-        }
-        if(raw && typeof raw === 'object'){
-          if(!Array.isArray(raw.items)) raw.items = [];
-          if(typeof raw.lastId!=='number') raw.lastId = raw.items.reduce((m,r)=>Math.max(m, Number(r.id||0)), 0);
-          if(!raw.version) raw.version = 1;
-          return raw;
-        }
-        return { version:1, lastId:0, items:[] };
-      }catch(e){
-        return { version:1, lastId:0, items:[] };
-      }
-    },
-    save(obj){ localStorage.setItem(KEY, JSON.stringify(obj)); },
-    add(item){
-      const d = this.load();
-      const id = (d.lastId||0) + 1;
-      const rec = { id, ...item };
-      d.items.push(rec);
-      d.lastId = id;
-      this.save(d);
-      return rec;
-    },
-    byReporter(name){
-      const d = this.load();
-      const nm = (name||'').trim().toLowerCase();
-      if(!nm) return [];
-      return d.items
-        .filter(x => (x.reporter||'').toLowerCase().includes(nm))
-        .sort((a,b)=> String(b.createdAt).localeCompare(String(a.createdAt)))
-        .slice(0,10);
-    }
-  };
-
-  // ====== ФОРМА ======
-  const form = $('#form');
-  const player = $('#player');
-  const steam = $('#steam');
-  const server = $('#server');
-  const category = $('#category');
-  const reason = $('#reason');
-  const evidence = $('#evidence');
-  const reporter = $('#reporter');
-  const remember = $('#remember');
-
-  const okBox = $('#ok');
-  const errBox = $('#err');
-
-  // запомнить имя репортера (если было)
-  const SAVED_NAME_KEY = 'coolzm_reporter_name';
-  const savedName = localStorage.getItem(SAVED_NAME_KEY) || '';
-  if(savedName){ reporter.value = savedName; remember.value = '1'; }
-
-  function showOK(msg){
-    okBox.textContent = msg;
-    okBox.style.display = 'block';
-    errBox.style.display = 'none';
-  }
-  function showERR(msg){
-    errBox.textContent = msg;
-    errBox.style.display = 'block';
-    okBox.style.display = 'none';
-  }
-  function clearAlerts(){ okBox.style.display='none'; errBox.style.display='none'; }
-
-  function trimMulti(s){ return String(s||'').replace(/\s+/g,' ').trim(); }
-
-  form.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    clearAlerts();
-
-    const data = {
-      createdAt: new Date().toISOString(),
-      player: trimMulti(player.value),
-      steam: steam.value.trim(),
-      reason: `[${server.value}/${category.value}] ${trimMulti(reason.value)}`,
-      evidence: evidence.value.trim(),
-      reporter: trimMulti(reporter.value),
-      status: 'new',
-      handledBy: ''
-    };
-
-    if(!data.player){ showERR('Укажите ник нарушителя.'); player.focus(); return; }
-    if(!reason.value.trim()){ showERR('Опишите причину.'); reason.focus(); return; }
-
-    // сохранить имя при необходимости
-    if(remember.value === '1' && data.reporter){
-      localStorage.setItem(SAVED_NAME_KEY, data.reporter);
-    }else{
-      localStorage.removeItem(SAVED_NAME_KEY);
-    }
-
-    const rec = Reports.add(data);
-
-    // очистка формы
-    form.reset();
-    if(savedName || remember.value==='1'){ reporter.value = localStorage.getItem(SAVED_NAME_KEY) || ''; remember.value='1'; }
-    showOK(`Жалоба отправлена. Номер #${rec.id}. Спасибо!`);
-    updateMine();
-    // мигнём кнопкой отправки
-    const btn = form.querySelector('button[type="submit"]');
-    btn.classList.add('primary'); setTimeout(()=>btn.classList.remove('primary'), 500);
-  });
-
-  $('#clear').addEventListener('click', ()=>{
-    form.reset(); clearAlerts();
-    if(localStorage.getItem(SAVED_NAME_KEY)){ reporter.value = localStorage.getItem(SAVED_NAME_KEY); remember.value='1'; }
-  });
-
-  // ====== «Мои жалобы» (по ник/контакту этого устройства) ======
-  const mineBox = $('#mine');
-  const mineEmpty = $('#mineEmpty');
-
-  function esc(s){
-    return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
-  }
-  function linkify(text){
-    return String(text||'').replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
-  }
-  function fmtDate(iso){ try{ return new Date(iso).toLocaleString(); }catch{ return iso||''; } }
-
-  function renderMine(list){
-    if(!list.length){ mineBox.innerHTML=''; mineEmpty.style.display='block'; return; }
-    mineEmpty.style.display='none';
-    mineBox.innerHTML = list.map(r=>`
-      <div class="item">
-        <div class="mutedLine">#${r.id} • ${fmtDate(r.createdAt)} • Статус: ${esc(r.status)} ${r.handledBy?`• Взял: ${esc(r.handledBy)}`:''}</div>
-        <div><b>${esc(r.player)}</b> ${r.steam?`• ${esc(r.steam)}`:''}</div>
-        <div>${esc(r.reason)}</div>
-        ${r.evidence?`<div>${linkify(esc(r.evidence))}</div>`:''}
-      </div>
-    `).join('');
-  }
-
-  function updateMine(){
-    const nm = reporter.value || localStorage.getItem(SAVED_NAME_KEY) || '';
-    const list = Reports.byReporter(nm);
-    renderMine(list);
-  }
-
-  // при загрузке
-  document.addEventListener('DOMContentLoaded', updateMine);
-  // если другой таб (admin.html) что-то поменял — обновим блок «мои»
-  window.addEventListener('storage', (e)=>{ if(e.key===KEY) updateMine(); });
   </script>
 </body>
 </html>
