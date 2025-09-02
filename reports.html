@@ -51,20 +51,36 @@
     .status.open{background:rgba(0,255,127,.1)}
     .status.closed{background:rgba(255,80,80,.12)}
 
-    /* ===== Мобильные стили ===== */
+    /* ===== Мобильные стили: <= 420px ===== */
     @media (max-width:420px){
-      .nav{grid-template-columns:1fr; gap:8px}
-      .controls{justify-content:flex-start; flex-wrap:wrap}
-      .btn{height:auto; padding:10px 12px}
-      .headline{font-size:24px}
+      .nav{grid-template-columns:1fr;gap:8px}
+      .brand{gap:10px}
+      .logo{width:34px;height:34px;border-radius:10px}
+      .controls{justify-content:flex-start;flex-wrap:wrap}
+      .controls .btn{width:100%;height:auto}
+      .headline{font-size:24px;margin-bottom:8px}
       .card{padding:16px}
+      .notice{gap:8px}
+      .schedule{flex-direction:column;align-items:flex-start}
+      .status{width:100%;text-align:center}
+      main{padding:20px 12px 56px}
+      /* переносим длинные ссылки аккуратно */
+      .card a{overflow-wrap:anywhere;word-break:break-word}
+      /* увеличиваем область нажатия кнопок */
+      .btn{padding:12px}
     }
+
+    /* ===== Очень узкие экраны: <= 360px ===== */
     @media (max-width:360px){
+      .nav{gap:6px}
       .brand{gap:8px}
-      .logo{width:32px;height:32px;border-radius:10px}
-      .headline{font-size:22px}
-      .btn{font-size:14px; padding:8px 10px}
-      main{padding:20px 12px 48px}
+      .logo{width:28px;height:28px;border-radius:8px}
+      .headline{font-size:21px}
+      .btn{font-size:14px;padding:10px 12px}
+      .controls .btn{padding:12px}
+      .sub{font-size:.95rem}
+      .status{font-size:.95rem}
+      main{padding:18px 10px 48px}
     }
   </style>
 </head>
@@ -88,11 +104,10 @@
   <main>
     <section class="card">
       <h1 class="headline">Отправка жалоб</h1>
-      <p class="sub">Теперь подача жалоб через эту страницу недоступна.</p>
-      <p>Все жалобы принимаются <b>только через нашего Telegram-бота</b>. Используйте его, чтобы оформить жалобу на игрока.</p>
+      <p class="sub">Подача жалоб через сайт отключена. Используйте <b>Telegram‑бота</b> ниже.</p>
 
       <div class="notice">
-        <div><b>Время приёма жалоб:</b> ежедневно <b>с 07:00 до 15:00</b> по Ташкенту (UTC+5) и <b>с 05:00 до 13:00</b> по Москве (UTC+3).</div>
+        <div><b>Время приёма:</b> ежедневно <b>07:00–15:00</b> Ташкент (UTC+5) / <b>05:00–13:00</b> Москва (UTC+3).</div>
         <div class="schedule">
           <span class="muted">Статус сейчас:</span>
           <span id="status" class="status">—</span>
@@ -100,7 +115,7 @@
         </div>
       </div>
 
-      <p>Ссылка на Telegram-бота: <a href="https://t.me/coolzmreport_bot" target="_blank">@coolzmreport_bot</a></p>
+      <p>Telegram‑бот: <a href="https://t.me/coolzmreport_bot" target="_blank" rel="noopener">@coolzmreport_bot</a></p>
     </section>
   </main>
 
