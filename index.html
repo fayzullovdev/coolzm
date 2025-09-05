@@ -1,289 +1,716 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>COOLZM — Паблик и Зомби серверы</title>
-  <meta name="description" content="CS 1.6 серверы: Паблик и Зомби. Как подключиться, правила, команды, ссылки на сообщество. Dark/Light. Сохранение настроек в localStorage."/>
-  <meta name="color-scheme" content="dark light"/>
-  <link rel="icon" href="logo.png">
-  <style>
-    /* ======= THEME ======= */
-    :root {
-      --bg: #0b0f14;
-      --card: #101722;
-      --text: #e5f1ff;
-      --muted: #9ab0c9;
-      --primary: #00ff7f; /* cs1.6 radar green vibe */
-      --accent: #00c2ff;  /* blue hud vibe */
-      --border: #1d2a3a;
-      --shadow: 0 12px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --ring: 0 0 0 3px rgba(0,255,127,.25);
-    }
-    [data-theme="light"]{
-      --bg: #f7fafc;
-      --card: #ffffff;
-      --text: #0e1a2a;
-      --muted: #5b6b7f;
-      --primary: #0ea5e9;
-      --accent: #16a34a;
-      --border: #e5eaf0;
-      --shadow: 0 10px 24px rgba(2,6,23,.08);
-      --ring: 0 0 0 3px rgba(14,165,233,.22);
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>COOLZM — Паблик и Зомби серверы</title>
+    <meta
+      name="description"
+      content="CS 1.6 серверы: Паблик и Зомби. Как подключиться, правила, команды, ссылки на сообщество. Dark/Light. Сохранение настроек в localStorage."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="logo.png" />
+    <style>
+      /* ======= THEME ======= */
+      :root {
+        --bg: #0b0f14;
+        --card: #101722;
+        --text: #e5f1ff;
+        --muted: #9ab0c9;
+        --primary: #00ff7f; /* cs1.6 radar green vibe */
+        --accent: #00c2ff; /* blue hud vibe */
+        --border: #1d2a3a;
+        --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        --radius: 16px;
+        --ring: 0 0 0 3px rgba(0, 255, 127, 0.25);
+      }
+      [data-theme="light"] {
+        --bg: #f7fafc;
+        --card: #ffffff;
+        --text: #0e1a2a;
+        --muted: #5b6b7f;
+        --primary: #0ea5e9;
+        --accent: #16a34a;
+        --border: #e5eaf0;
+        --shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
+        --ring: 0 0 0 3px rgba(14, 165, 233, 0.22);
+      }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0; background:
-        radial-gradient(1200px 900px at 10% -10%, rgba(0,194,255,.08), transparent 60%),
-        radial-gradient(1000px 700px at 110% -20%, rgba(0,255,127,.08), transparent 60%),
-        var(--bg);
-      color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Segoe UI Emoji";
-      line-height: 1.6;
-      cursor: crosshair; /* cs vibe */
-    }
-    a { color: var(--primary); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(
+            1200px 900px at 10% -10%,
+            rgba(0, 194, 255, 0.08),
+            transparent 60%
+          ),
+          radial-gradient(
+            1000px 700px at 110% -20%,
+            rgba(0, 255, 127, 0.08),
+            transparent 60%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial,
+          "Noto Sans", "Segoe UI Emoji";
+        line-height: 1.6;
+        cursor: crosshair; /* cs vibe */
+      }
+      a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
 
-    /* ======= HEADER ======= */
-    header { position: sticky; top: 0; z-index: 20; backdrop-filter: saturate(160%) blur(8px); border-bottom: 1px solid var(--border); background: rgba(6,10,16,.6); }
-    [data-theme="light"] header { background: rgba(255,255,255,.7); }
-    .nav { max-width: 1100px; margin: 0 auto; padding: 12px 16px; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: .3px; }
-    .logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: var(--shadow); color: #001b1b; font-weight: 1000; overflow: hidden; }
-    .logo img { width: 100%; border-radius: 12px; }
-    .controls { display: flex; gap: 8px; align-items: center; }
-    .btn, select { height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-    .btn.primary { background: var(--primary); color: #001b1b; border-color: transparent; font-weight: 800; }
-    .btn:hover { filter: brightness(1.05); }
+      /* ======= HEADER ======= */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: saturate(160%) blur(8px);
+        border-bottom: 1px solid var(--border);
+        background: rgba(6, 10, 16, 0.6);
+      }
+      [data-theme="light"] header {
+        background: rgba(255, 255, 255, 0.7);
+      }
+      .nav {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 12px 16px;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+      }
+      .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        box-shadow: var(--shadow);
+        color: #001b1b;
+        font-weight: 1000;
+        overflow: hidden;
+      }
+      .logo img {
+        width: 100%;
+        border-radius: 12px;
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .btn,
+      select {
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        color: var(--text);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn.primary {
+        background: var(--primary);
+        color: #001b1b;
+        border-color: transparent;
+        font-weight: 800;
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
 
-    main { max-width: 1100px; margin: 0 auto; padding: 28px 16px 80px; }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 28px 16px 80px;
+      }
 
-    /* ======= HERO ======= */
-    .hero { display: grid; gap: 16px; padding: 28px; border: 1px solid var(--border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(0,255,127,.06), rgba(0,194,255,.04)), var(--card); box-shadow: var(--shadow); }
-    .headline { font-size: clamp(28px, 4vw, 48px); line-height: 1.12; font-weight: 1000; letter-spacing: .2px; }
-    .scanline { background: linear-gradient(180deg, rgba(255,255,255,.12) 1px, transparent 1px); background-size: 100% 10px; mask-image: linear-gradient(180deg, transparent, #000 40%, #000 60%, transparent); }
-    .sub { color: var(--muted); }
-    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
-    .badge { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(0,255,127,.08); font-size: .9rem; }
+      /* ======= HERO ======= */
+      .hero {
+        display: grid;
+        gap: 16px;
+        padding: 28px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: linear-gradient(
+            180deg,
+            rgba(0, 255, 127, 0.06),
+            rgba(0, 194, 255, 0.04)
+          ),
+          var(--card);
+        box-shadow: var(--shadow);
+      }
+      .headline {
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1.12;
+        font-weight: 1000;
+        letter-spacing: 0.2px;
+      }
+      .scanline {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.12) 1px,
+          transparent 1px
+        );
+        background-size: 100% 10px;
+        mask-image: linear-gradient(
+          180deg,
+          transparent,
+          #000 40%,
+          #000 60%,
+          transparent
+        );
+      }
+      .sub {
+        color: var(--muted);
+      }
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .badge {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(0, 255, 127, 0.08);
+        font-size: 0.9rem;
+      }
 
-    /* ======= GRID & CARDS ======= */
-    .grid { margin-top: 26px; display: grid; gap: 16px; grid-template-columns: repeat(12,1fr); }
-    .card { grid-column: span 12; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); padding: 16px; box-shadow: var(--shadow); }
-    @media (min-width: 760px){ .half { grid-column: span 6; } .third { grid-column: span 4; } }
-    .card h3 { margin: 6px 0 10px; font-size: 1.15rem; }
-    .list { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
-    .li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; }
-    .icon { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; background: rgba(0,255,127,.1); border: 1px solid var(--border); }
+      /* ======= GRID & CARDS ======= */
+      .grid {
+        margin-top: 26px;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+      .card {
+        grid-column: span 12;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card);
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+      @media (min-width: 760px) {
+        .half {
+          grid-column: span 6;
+        }
+        .third {
+          grid-column: span 4;
+        }
+      }
+      .card h3 {
+        margin: 6px 0 10px;
+        font-size: 1.15rem;
+      }
+      .list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .li {
+        display: grid;
+        grid-template-columns: 22px 1fr;
+        gap: 10px;
+      }
+      .icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        display: grid;
+        place-items: center;
+        background: rgba(0, 255, 127, 0.1);
+        border: 1px solid var(--border);
+      }
 
-    .server { display: grid; gap: 10px; }
-    .kv { display: grid; grid-template-columns: 120px 1fr; gap: 10px; align-items: center; }
-    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: rgba(0,194,255,.08); }
+      .server {
+        display: grid;
+        gap: 10px;
+      }
+      .kv {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(0, 194, 255, 0.08);
+      }
 
-    .socials { display: flex; flex-wrap: wrap; gap: 8px; }
-    .social { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 12px; padding: 8px 12px; display: inline-flex; align-items: center; gap: 8px; }
+      .socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .social {
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 8px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-    .muted { color: var(--muted); font-size: .95rem; }
-    .sep { height: 1px; background: var(--border); margin: 16px 0; }
+      .muted {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .sep {
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
 
-    /* ======= FOOTER ======= */
-    footer { margin-top: 28px; padding: 22px 0 40px; color: var(--muted); font-size: .95rem; text-align: center; }
+      /* ======= FOOTER ======= */
+      footer {
+        margin-top: 28px;
+        padding: 22px 0 40px;
+        color: var(--muted);
+        font-size: 0.95rem;
+        text-align: center;
+      }
 
-    /* ======= SMALL FX ======= */
-    .focus { box-shadow: var(--ring); outline: none; }
-    .kbd { border: 1px solid var(--border); background: var(--bg); border-radius: 6px; padding: 1px 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-    .download_link{ width: 200px;}
-  </style>
-  
-  <link rel="stylesheet" href="./index_res.css">
-</head>
-<body>
-  <header>
-    <nav class="nav">
-      <div class="brand">
-        <div class="logo"><img src="./logo.png" alt=""></div>
-        <div>
-          <div style="font-weight:800">COOLZM</div>
-          <div class="muted">Паблик и Зомби серверы</div>
-        </div>
-      </div>
-      <div class="controls">    
-        <!-- Язык убран, интерфейс зафиксирован на русском -->
-        <button id="theme" class="btn">Тёмная</button>
-        <a class="btn primary" href="./reports.html">Жалобы</a>
-        <a class="btn primary" style="background:transparent;border-color:#00ff7f;color:#00ff7f;" href="./rules.html">Правила</a>
-        <a id="shop" class="btn primary" href="./shop.html" rel="noopener">Магазин</a>
-      </div>
-    </nav>
-  </header>
+      /* ======= SMALL FX ======= */
+      .focus {
+        box-shadow: var(--ring);
+        outline: none;
+      }
+      .kbd {
+        border: 1px solid var(--border);
+        background: var(--bg);
+        border-radius: 6px;
+        padding: 1px 6px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", monospace;
+      }
+      .download_link {
+        width: 200px;
+      }
+    </style>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return;
+          }
+        }
+        (k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a);
+      })(
+        window,
+        document,
+        "script",
+        "https://mc.yandex.ru/metrika/tag.js?id=104046718",
+        "ym"
+      );
 
-  <main>
-    <section class="hero scanline">
-      <div class="headline">CS 1.6 COOLZM — ПАБЛИК & ЗОМБИ</div>
-      <p class="sub">Подключайтесь через протокол Steam, читайте правила и команды. Всё на одной странице.</p>
-      <div class="badges">
-        <span class="badge">Интерфейс: RU</span>
-        <span class="badge">Тёмная / Светлая</span>
-        <span class="badge">Сохранение в localStorage</span>
-        <span class="badge">Стиль HUD CS 1.6</span>
-      </div>
-    </section>
-
-    <section class="grid">
-      <!-- Servers -->
-      <article class="card half">
-        <h3>PUBLIC</h3>
-        <div class="server">
-          <div class="kv"><div>IP:</div><div><span id="pubIp">93.191.11.211</span>:<span id="pubPort">27021</span></div></div>
-          <div class="kv"><div>Пароль:</div><div><span id="pubPass">—</span></div></div>
-          <div class="kv"><div>Подключение:</div><div><a id="pubLink" class="pill" href="#">steam://connect</a> <button class="btn" data-copy="#pubIp">Скопировать IP</button></div></div>
-          <div class="sep"></div>
-          <ul class="list">
-            <li class="li"><div class="icon">★</div><div>Классический defuse/hostage, честная игра, античит.</div></li>
-            <li class="li"><div class="icon">⌨</div><div>Команды: /rtv /rs /vips /maps.</div></li>
-            <li class="li"><div class="icon">⚙</div><div>Рекомендуемые настройки net_graph и rate.</div></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="card half">
-        <h3>ZOMBIE</h3>
-        <div class="server">
-          <div class="kv"><div>IP:</div><div><span id="zmIp">46.174.52.14</span>:<span id="zmPort">27255</span></div></div>
-          <div class="kv"><div>Пароль:</div><div><span id="zmPass">—</span></div></div>
-          <div class="kv"><div>Подключение:</div><div><a id="zmLink" class="pill" href="#">steam://connect</a> <button class="btn" data-copy="#zmIp">Скопировать IP</button></div></div>
-          <div class="sep"></div>
-          <ul class="list">
-            <li class="li"><div class="icon">🧟</div><div>Biohazard Classic: выживай или заражай. Есть предметы.</div></li>
-            <li class="li"><div class="icon">💬</div><div>Команды: /rtv /rs /vips /maps.</div></li>
-            <li class="li"><div class="icon">🔧</div><div>Запрещены лазерные мины и баг-абуз.</div></li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- How to connect -->
-      <article class="card third">
-        <h3>Как подключиться</h3>
-        <ol class="list">
-          <li class="li"><div class="icon">①</div><div>Установите Steam (клиент CS 1.6/GoldSrc).</div></li>
-          <li class="li"><div class="icon">②</div><div>Нажмите ссылку <span class="kbd">steam://connect</span> — игра подключится напрямую.</div></li>
-          <li class="li"><div class="icon">③</div><div>Либо добавьте IP:PORT в «Избранное» и подключайтесь.</div></li>
-        </ol>
-        <p class="muted">Примечание: используется браузерный протокол Steam.</p>
-      </article>
-
-      <!-- Rules -->
-      <article class="card third">
-        <h3>Правила (кратко)</h3>
-        <ul class="list">
-          <li class="li"><div class="icon">✔</div><div>Запрещены читы, эксплойты и баг-абуз.</div></li>
-          <li class="li"><div class="icon">✔</div><div>Уважайте игроков: без оскорблений, спама и рекламы.</div></li>
-          <li class="li"><div class="icon">✔</div><div>Играйте по целям команды; не мешайте намеренно.</div></li>
-          <li class="li"><div class="icon">✔</div><div>Zombie: никаких запрещённых биндов/багов (например, лазермайн-абуз).</div></li>
-        </ul>
-        <p class="muted">Полные правила определяются администрацией; нарушения — предупреждение/бан.</p>
-      </article>
-
-      <!-- Useful -->
-      <article class="card third">
-        <h3>Полезное</h3>
-        <ul class="list">
-          <li class="li"><div class="icon">⌨</div><div>Пример bind: <span class="kbd">bind F2 "rebuy"</span></div></li>
-          <li class="li"><div class="icon">⚡</div><div>Сеть: <span class="kbd">rate 25000</span>, <span class="kbd">cl_updaterate 101</span>, <span class="kbd">cl_cmdrate 101</span></div></li>
-          <li class="li"><div class="icon">⬇</div><div>Чистый клиент CS 1.6: </div><a class="download_link" href="https://all-cs.ru/sborki/CS16_Setup.exe">Скачать можно тут</a></li>
-        </ul>
-      </article>
-
-      <!-- Contacts -->
-      <article class="card" style="display:flex;align-items:center;justify-content:center;width:100%;flex-direction:column;">
-        <h3>Контакты и Сообщество</h3>
-        <div class="socials">
-          <a class="social" id="tgLink" href="#" target="_blank" rel="noopener">Telegram</a>
-          <a class="social" id="igLink" href="#" target="_blank" rel="noopener">Instagram</a>
-          <a class="social" id="dcLink" href="#" target="_blank" rel="noopener">Discord</a>
-        </div>
-      </article>
-    </section>
-  </main>
-
-  <footer>
-    <div>© <span id="year"></span> CS 1.6 Community</div>
-  </footer>
-
-  <script>
-    // ======= helpers/state =======
-    const $ = (q, ctx=document) => ctx.querySelector(q);
-    const $$ = (q, ctx=document) => Array.from(ctx.querySelectorAll(q));
-    const state = {
-      theme: localStorage.getItem('theme') || 'dark',
-      shop:  localStorage.getItem('shop') || './shop.html',
-      rule:  localStorage.getItem('rule') || './rules.html',
-      tg:    localStorage.getItem('tg')   || 'https://t.me/cs_chuvashi',
-      ig:    localStorage.getItem('ig')   || 'https://instagram.com/1mln_edits',
-      dc:    localStorage.getItem('dc')   || 'https://discord.gg/xTaE3C97',
-      servers: JSON.parse(localStorage.getItem('servers') || '{}') || {}
-    };
-
-    const defaults = {
-      pub: { ip: '93.191.11.211', port: '27021', pass: '' },
-      zm:  { ip: '46.174.52.14',  port: '27255', pass: '' }
-    };
-
-    function applyTheme(){
-      document.documentElement.setAttribute('data-theme', state.theme);
-      $('#theme').textContent = state.theme === 'dark' ? 'Light' : 'Dark';
-    }
-
-    function getServer(kind){
-      const s = state.servers[kind] || defaults[kind];
-      return { ip: s.ip || defaults[kind].ip, port: s.port || defaults[kind].port, pass: s.pass || '' };
-    }
-
-    function makeSteamLink(s){
-      // steam://connect/<IP>[:<port>][/<password>]
-      let url = `steam://connect/${s.ip}`;
-      if (s.port) url += `:${s.port}`;
-      if (s.pass) url += `/${s.pass}`;
-      return url;
-    }
-
-    function renderServers(){
-      const pub = getServer('pub');
-      const zm  = getServer('zm');
-      $('#pubIp').textContent = pub.ip; $('#pubPort').textContent = pub.port; $('#pubPass').textContent = pub.pass || '—';
-      $('#zmIp').textContent  = zm.ip;  $('#zmPort').textContent  = zm.port;  $('#zmPass').textContent  = zm.pass || '—';
-      $('#pubLink').href = makeSteamLink(pub);
-      $('#zmLink').href  = makeSteamLink(zm);
-    }
-
-    // ======= init/events =======
-    document.addEventListener('DOMContentLoaded', () => {
-      document.documentElement.lang = 'ru';
-      applyTheme(); renderServers();
-
-      $('#shop').href   = state.shop;
-      $('#tgLink').href = state.tg;
-      $('#igLink').href = state.ig;
-      $('#dcLink').href = state.dc;
-      $('#year').textContent = new Date().getFullYear();
-
-      // theme toggle
-      $('#theme').addEventListener('click', () => {
-        state.theme = (state.theme === 'dark') ? 'light' : 'dark';
-        localStorage.setItem('theme', state.theme);
-        applyTheme();
+      ym(104046718, "init", {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        accurateTrackBounce: true,
+        trackLinks: true,
       });
+    </script>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/104046718"
+          style="position: absolute; left: -9999px"
+          alt=""
+        /></div
+    ></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <link rel="stylesheet" href="./index_res.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <div class="brand">
+          <div class="logo"><img src="./logo.png" alt="" /></div>
+          <div>
+            <div style="font-weight: 800">COOLZM</div>
+            <div class="muted">Паблик и Зомби серверы</div>
+          </div>
+        </div>
+        <div class="controls">
+          <!-- Язык убран, интерфейс зафиксирован на русском -->
+          <button id="theme" class="btn">Тёмная</button>
+          <a class="btn primary" href="./reports.html">Жалобы</a>
+          <a
+            class="btn primary"
+            style="
+              background: transparent;
+              border-color: #00ff7f;
+              color: #00ff7f;
+            "
+            href="./rules.html"
+            >Правила</a
+          >
+          <a id="shop" class="btn primary" href="./shop.html" rel="noopener"
+            >Магазин</a
+          >
+        </div>
+      </nav>
+    </header>
 
-      // copy ip buttons
-      $$('[data-copy]').forEach(btn => btn.addEventListener('click', () => {
-        const target = $(btn.getAttribute('data-copy'));
-        const ip = target.textContent.trim();
-        navigator.clipboard?.writeText(ip);
-        btn.classList.add('focus'); setTimeout(()=>btn.classList.remove('focus'), 600);
-      }));
-    });
-  </script>
-</body>
+    <main>
+      <section class="hero scanline">
+        <div class="headline">CS 1.6 COOLZM — ПАБЛИК & ЗОМБИ</div>
+        <p class="sub">
+          Подключайтесь через протокол Steam, читайте правила и команды. Всё на
+          одной странице.
+        </p>
+        <div class="badges">
+          <span class="badge">Интерфейс: RU</span>
+          <span class="badge">Тёмная / Светлая</span>
+          <span class="badge">Сохранение в localStorage</span>
+          <span class="badge">Стиль HUD CS 1.6</span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <!-- Servers -->
+        <article class="card half">
+          <h3>PUBLIC</h3>
+          <div class="server">
+            <div class="kv">
+              <div>IP:</div>
+              <div>
+                <span id="pubIp">93.191.11.211</span>:<span id="pubPort"
+                  >27021</span
+                >
+              </div>
+            </div>
+            <div class="kv">
+              <div>Пароль:</div>
+              <div><span id="pubPass">—</span></div>
+            </div>
+            <div class="kv">
+              <div>Подключение:</div>
+              <div>
+                <a id="pubLink" class="pill" href="#">steam://connect</a>
+                <button class="btn" data-copy="#pubIp">Скопировать IP</button>
+              </div>
+            </div>
+            <div class="sep"></div>
+            <ul class="list">
+              <li class="li">
+                <div class="icon">★</div>
+                <div>Классический defuse/hostage, честная игра, античит.</div>
+              </li>
+              <li class="li">
+                <div class="icon">⌨</div>
+                <div>Команды: /rtv /rs /vips /maps.</div>
+              </li>
+              <li class="li">
+                <div class="icon">⚙</div>
+                <div>Рекомендуемые настройки net_graph и rate.</div>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card half">
+          <h3>ZOMBIE</h3>
+          <div class="server">
+            <div class="kv">
+              <div>IP:</div>
+              <div>
+                <span id="zmIp">46.174.52.14</span>:<span id="zmPort"
+                  >27255</span
+                >
+              </div>
+            </div>
+            <div class="kv">
+              <div>Пароль:</div>
+              <div><span id="zmPass">—</span></div>
+            </div>
+            <div class="kv">
+              <div>Подключение:</div>
+              <div>
+                <a id="zmLink" class="pill" href="#">steam://connect</a>
+                <button class="btn" data-copy="#zmIp">Скопировать IP</button>
+              </div>
+            </div>
+            <div class="sep"></div>
+            <ul class="list">
+              <li class="li">
+                <div class="icon">🧟</div>
+                <div>
+                  Biohazard Classic: выживай или заражай. Есть предметы.
+                </div>
+              </li>
+              <li class="li">
+                <div class="icon">💬</div>
+                <div>Команды: /rtv /rs /vips /maps.</div>
+              </li>
+              <li class="li">
+                <div class="icon">🔧</div>
+                <div>Запрещены лазерные мины и баг-абуз.</div>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- How to connect -->
+        <article class="card third">
+          <h3>Как подключиться</h3>
+          <ol class="list">
+            <li class="li">
+              <div class="icon">①</div>
+              <div>Установите Steam (клиент CS 1.6/GoldSrc).</div>
+            </li>
+            <li class="li">
+              <div class="icon">②</div>
+              <div>
+                Нажмите ссылку <span class="kbd">steam://connect</span> — игра
+                подключится напрямую.
+              </div>
+            </li>
+            <li class="li">
+              <div class="icon">③</div>
+              <div>Либо добавьте IP:PORT в «Избранное» и подключайтесь.</div>
+            </li>
+          </ol>
+          <p class="muted">
+            Примечание: используется браузерный протокол Steam.
+          </p>
+        </article>
+
+        <!-- Rules -->
+        <article class="card third">
+          <h3>Правила (кратко)</h3>
+          <ul class="list">
+            <li class="li">
+              <div class="icon">✔</div>
+              <div>Запрещены читы, эксплойты и баг-абуз.</div>
+            </li>
+            <li class="li">
+              <div class="icon">✔</div>
+              <div>Уважайте игроков: без оскорблений, спама и рекламы.</div>
+            </li>
+            <li class="li">
+              <div class="icon">✔</div>
+              <div>Играйте по целям команды; не мешайте намеренно.</div>
+            </li>
+            <li class="li">
+              <div class="icon">✔</div>
+              <div>
+                Zombie: никаких запрещённых биндов/багов (например,
+                лазермайн-абуз).
+              </div>
+            </li>
+          </ul>
+          <p class="muted">
+            Полные правила определяются администрацией; нарушения —
+            предупреждение/бан.
+          </p>
+        </article>
+
+        <!-- Useful -->
+        <article class="card third">
+          <h3>Полезное</h3>
+          <ul class="list">
+            <li class="li">
+              <div class="icon">⌨</div>
+              <div>Пример bind: <span class="kbd">bind F2 "rebuy"</span></div>
+            </li>
+            <li class="li">
+              <div class="icon">⚡</div>
+              <div>
+                Сеть: <span class="kbd">rate 25000</span>,
+                <span class="kbd">cl_updaterate 101</span>,
+                <span class="kbd">cl_cmdrate 101</span>
+              </div>
+            </li>
+            <li class="li">
+              <div class="icon">⬇</div>
+              <div>Чистый клиент CS 1.6:</div>
+              <a
+                class="download_link"
+                href="https://all-cs.ru/sborki/CS16_Setup.exe"
+                >Скачать можно тут</a
+              >
+            </li>
+          </ul>
+        </article>
+
+        <!-- Contacts -->
+        <article
+          class="card"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            flex-direction: column;
+          "
+        >
+          <h3>Контакты и Сообщество</h3>
+          <div class="socials">
+            <a
+              class="social"
+              id="tgLink"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              >Telegram</a
+            >
+            <a
+              class="social"
+              id="igLink"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              >Instagram</a
+            >
+            <a
+              class="social"
+              id="dcLink"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              >Discord</a
+            >
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <span id="year"></span> CS 1.6 Community</div>
+    </footer>
+
+    <script>
+      // ======= helpers/state =======
+      const $ = (q, ctx = document) => ctx.querySelector(q);
+      const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q));
+      const state = {
+        theme: localStorage.getItem("theme") || "dark",
+        shop: localStorage.getItem("shop") || "./shop.html",
+        rule: localStorage.getItem("rule") || "./rules.html",
+        tg: localStorage.getItem("tg") || "https://t.me/cs_chuvashi",
+        ig: localStorage.getItem("ig") || "https://instagram.com/1mln_edits",
+        dc: localStorage.getItem("dc") || "https://discord.gg/xTaE3C97",
+        servers: JSON.parse(localStorage.getItem("servers") || "{}") || {},
+      };
+
+      const defaults = {
+        pub: { ip: "93.191.11.211", port: "27021", pass: "" },
+        zm: { ip: "46.174.52.14", port: "27255", pass: "" },
+      };
+
+      function applyTheme() {
+        document.documentElement.setAttribute("data-theme", state.theme);
+        $("#theme").textContent = state.theme === "dark" ? "Light" : "Dark";
+      }
+
+      function getServer(kind) {
+        const s = state.servers[kind] || defaults[kind];
+        return {
+          ip: s.ip || defaults[kind].ip,
+          port: s.port || defaults[kind].port,
+          pass: s.pass || "",
+        };
+      }
+
+      function makeSteamLink(s) {
+        // steam://connect/<IP>[:<port>][/<password>]
+        let url = `steam://connect/${s.ip}`;
+        if (s.port) url += `:${s.port}`;
+        if (s.pass) url += `/${s.pass}`;
+        return url;
+      }
+
+      function renderServers() {
+        const pub = getServer("pub");
+        const zm = getServer("zm");
+        $("#pubIp").textContent = pub.ip;
+        $("#pubPort").textContent = pub.port;
+        $("#pubPass").textContent = pub.pass || "—";
+        $("#zmIp").textContent = zm.ip;
+        $("#zmPort").textContent = zm.port;
+        $("#zmPass").textContent = zm.pass || "—";
+        $("#pubLink").href = makeSteamLink(pub);
+        $("#zmLink").href = makeSteamLink(zm);
+      }
+
+      // ======= init/events =======
+      document.addEventListener("DOMContentLoaded", () => {
+        document.documentElement.lang = "ru";
+        applyTheme();
+        renderServers();
+
+        $("#shop").href = state.shop;
+        $("#tgLink").href = state.tg;
+        $("#igLink").href = state.ig;
+        $("#dcLink").href = state.dc;
+        $("#year").textContent = new Date().getFullYear();
+
+        // theme toggle
+        $("#theme").addEventListener("click", () => {
+          state.theme = state.theme === "dark" ? "light" : "dark";
+          localStorage.setItem("theme", state.theme);
+          applyTheme();
+        });
+
+        // copy ip buttons
+        $$("[data-copy]").forEach((btn) =>
+          btn.addEventListener("click", () => {
+            const target = $(btn.getAttribute("data-copy"));
+            const ip = target.textContent.trim();
+            navigator.clipboard?.writeText(ip);
+            btn.classList.add("focus");
+            setTimeout(() => btn.classList.remove("focus"), 600);
+          })
+        );
+      });
+    </script>
+  </body>
 </html>
