@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="dark">
-<link>
+<html lang="ru" data-theme="dark">
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coolzm — Public & Zombie Servers</title>
-  <meta name="description" content="CS 1.6 serverlari: Public va Zombie. Qanday ulanish, qoidalar, buyruqlar, hamjamiyat havolalari. 3 til: UZ/RU/EN. Dark/Light. localStorage saqlash."/>
+  <title>COOLZM — Паблик и Зомби серверы</title>
+  <meta name="description" content="CS 1.6 серверы: Паблик и Зомби. Как подключиться, правила, команды, ссылки на сообщество. Dark/Light. Сохранение настроек в localStorage."/>
   <meta name="color-scheme" content="dark light"/>
   <link rel="icon" href="logo.png">
   <style>
@@ -36,9 +36,10 @@
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      margin: 0; background: radial-gradient(1200px 900px at 10% -10%, rgba(0,194,255,.08), transparent 60%),
-                                   radial-gradient(1000px 700px at 110% -20%, rgba(0,255,127,.08), transparent 60%),
-                                   var(--bg);
+      margin: 0; background:
+        radial-gradient(1200px 900px at 10% -10%, rgba(0,194,255,.08), transparent 60%),
+        radial-gradient(1000px 700px at 110% -20%, rgba(0,255,127,.08), transparent 60%),
+        var(--bg);
       color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Segoe UI Emoji";
       line-height: 1.6;
       cursor: crosshair; /* cs vibe */
@@ -51,7 +52,8 @@
     [data-theme="light"] header { background: rgba(255,255,255,.7); }
     .nav { max-width: 1100px; margin: 0 auto; padding: 12px 16px; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; }
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: .3px; }
-    .logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: var(--shadow); color: #001b1b; font-weight: 1000; }
+    .logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: var(--shadow); color: #001b1b; font-weight: 1000; overflow: hidden; }
+    .logo img { width: 100%; border-radius: 12px; }
     .controls { display: flex; gap: 8px; align-items: center; }
     .btn, select { height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
     .btn.primary { background: var(--primary); color: #001b1b; border-color: transparent; font-weight: 800; }
@@ -93,13 +95,8 @@
     .focus { box-shadow: var(--ring); outline: none; }
     .kbd { border: 1px solid var(--border); background: var(--bg); border-radius: 6px; padding: 1px 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
     .download_link{ width: 200px;}
-    .logo img{
-        width: 100%;
-        overflow: hidden;
-    }
-</style>
-    <link rel="stylesheet" href="./index_res.css">
-
+  </style>
+  <link rel="stylesheet" href="./index_res.css">
 </head>
 <body>
   <header>
@@ -108,32 +105,28 @@
         <div class="logo"><img src="./logo.png" alt=""></div>
         <div>
           <div style="font-weight:800">COOLZM</div>
-          <div class="muted" data-i18n="brand.tag">Public & Zombie Server</div>
+          <div class="muted">Паблик и Зомби серверы</div>
         </div>
       </div>
       <div class="controls">
-        <select id="lang">
-          <option value="uz">UZ</option>
-          <option value="ru">RU</option>
-          <option value="en">EN</option>
-        </select>
-        <button id="theme" class="btn" data-i18n="ui.dark">Dark</button>
-        <a id="rule" style="border-color: #00ff7f;" class="btn primary"  data-i18n="nav.repo" href="./reports.html">Jaloba</a>
-        <a id="rule" style="background-color: transparent;border-color: #00ff7f;color: #00ff7f;" class="btn primary"  data-i18n="nav.rule" href="./rules.html">Qoidalar</a>
-        <a id="shop" class="btn primary" href="./shop.html"  rel="noopener" data-i18n="nav.shop">Do'kon</a>
+        <!-- Язык убран, интерфейс зафиксирован на русском -->
+        <button id="theme" class="btn">Тёмная</button>
+        <a class="btn primary" style="" href="./reports.html">Жалобы</a>
+        <a class="btn primary" style="background:transparent;border-color:#00ff7f;color:#00ff7f;" href="./rules.html">Правила</a>
+        <a id="shop" class="btn primary" href="./shop.html" rel="noopener">Магазин</a>
       </div>
     </nav>
   </header>
 
   <main>
     <section class="hero scanline">
-      <div class="headline" data-i18n="hero.title">CS 1.6 COOLZM — PUBLIC & ZOMBIE</div>
-      <p class="sub" data-i18n="hero.sub">Steam protokoli orqali tez ulaning, qoidalarni o'qing va buyruqlarni bilib oling. Hammasi bir sahifada.</p>
+      <div class="headline">CS 1.6 COOLZM — ПАБЛИК & ЗОМБИ</div>
+      <p class="sub">Подключайтесь через протокол Steam, читайте правила и команды. Всё на одной странице.</p>
       <div class="badges">
-        <span class="badge" data-i18n="hero.badge1">UZ • RU • EN</span>
-        <span class="badge" data-i18n="hero.badge2">Dark / Light</span>
-        <span class="badge" data-i18n="hero.badge3">localStorage saqlash</span>
-        <span class="badge" data-i18n="hero.badge4">CS 1.6 HUD uslubi</span>
+        <span class="badge">Интерфейс: RU</span>
+        <span class="badge">Тёмная / Светлая</span>
+        <span class="badge">Сохранение в localStorage</span>
+        <span class="badge">Стиль HUD CS 1.6</span>
       </div>
     </section>
 
@@ -142,14 +135,14 @@
       <article class="card half">
         <h3>PUBLIC</h3>
         <div class="server">
-          <div class="kv"><div data-i18n="server.ip">IP:</div><div><span id="pubIp">93.191.11.211</span>:<span id="pubPort">27021</span></div></div>
-          <div class="kv"><div data-i18n="server.pass">Parol:</div><div><span id="pubPass">—</span></div></div>
-          <div class="kv"><div data-i18n="server.connect">Ulanish:</div><div><a id="pubLink" class="pill" href="#">steam://connect</a> <button class="btn" data-copy="#pubIp" data-i18n="ui.copyip">IPni nusxala</button></div></div>
+          <div class="kv"><div>IP:</div><div><span id="pubIp">93.191.11.211</span>:<span id="pubPort">27021</span></div></div>
+          <div class="kv"><div>Пароль:</div><div><span id="pubPass">—</span></div></div>
+          <div class="kv"><div>Подключение:</div><div><a id="pubLink" class="pill" href="#">steam://connect</a> <button class="btn" data-copy="#pubIp">Скопировать IP</button></div></div>
           <div class="sep"></div>
           <ul class="list">
-            <li class="li"><div class="icon">★</div><div data-i18n="public.f1">Klassik defuse/hostage, adolatli o'yin, anticheat.</div></li>
-            <li class="li"><div class="icon">⌨</div><div data-i18n="public.f2">/rtv /rs /vips /maps kabi buyruqlar.</div></li>
-            <li class="li"><div class="icon">⚙</div><div data-i18n="public.f3">Tavsiya etilgan net_graph va rate sozlamalari.</div></li>
+            <li class="li"><div class="icon">★</div><div>Классический defuse/hostage, честная игра, античит.</div></li>
+            <li class="li"><div class="icon">⌨</div><div>Команды: /rtv /rs /vips /maps.</div></li>
+            <li class="li"><div class="icon">⚙</div><div>Рекомендуемые настройки net_graph и rate.</div></li>
           </ul>
         </div>
       </article>
@@ -157,54 +150,54 @@
       <article class="card half">
         <h3>ZOMBIE</h3>
         <div class="server">
-          <div class="kv"><div data-i18n="server.ip">IP:</div><div><span id="zmIp">0.0.0.0</span>:<span id="zmPort">27016</span></div></div>
-          <div class="kv"><div data-i18n="server.pass">Parol:</div><div><span id="zmPass">—</span></div></div>
-          <div class="kv"><div data-i18n="server.connect">Ulanish:</div><div><a id="zmLink" class="pill" href="#">steam://connect</a> <button class="btn" data-copy="#zmIp" data-i18n="ui.copyip">IPni nusxala</button></div></div>
+          <div class="kv"><div>IP:</div><div><span id="zmIp">46.174.52.14</span>:<span id="zmPort">27255</span></div></div>
+          <div class="kv"><div>Пароль:</div><div><span id="zmPass">—</span></div></div>
+          <div class="kv"><div>Подключение:</div><div><a id="zmLink" class="pill" href="#">steam://connect</a> <button class="btn" data-copy="#zmIp">Скопировать IP</button></div></div>
           <div class="sep"></div>
           <ul class="list">
-            <li class="li"><div class="icon">🧟</div><div data-i18n="zombie.f1">Zombie Plague rejimi: tirik qoling yoki yuqtiring. Sinflar va predmetlar.</div></li>
-            <li class="li"><div class="icon">💬</div><div data-i18n="zombie.f2">/rtv /rs /vips /maps kabi buyruqlar.</div></li>
-            <li class="li"><div class="icon">🔧</div><div data-i18n="zombie.f3">Lasermine, nofair buglardan foydalanish taqiqlanadi.</div></li>
+            <li class="li"><div class="icon">🧟</div><div>Biohazard Classic: выживай или заражай. Есть предметы.</div></li>
+            <li class="li"><div class="icon">💬</div><div>Команды: /rtv /rs /vips /maps.</div></li>
+            <li class="li"><div class="icon">🔧</div><div>Запрещены лазерные мины и баг-абуз.</div></li>
           </ul>
         </div>
       </article>
 
       <!-- How to connect -->
       <article class="card third">
-        <h3 data-i18n="how.title">Qanday ulanish</h3>
+        <h3>Как подключиться</h3>
         <ol class="list">
-          <li class="li"><div class="icon">①</div><div data-i18n="how.s1">Steam o'rnatilgan bo'lsin (CS 1.6 yoki GoldSrc mijoz).</div></li>
-          <li class="li"><div class="icon">②</div><div data-i18n="how.s2">Ustidagi <span class="kbd">steam://connect</span> havolasini bosing — o'yin to'g'ridan‑to'g'ri serverga ulanadi.</div></li>
-          <li class="li"><div class="icon">③</div><div data-i18n="how.s3">Yoki Favorites ga IP:PORT qo'shing va ulaning.</div></li>
+          <li class="li"><div class="icon">①</div><div>Установите Steam (клиент CS 1.6/GoldSrc).</div></li>
+          <li class="li"><div class="icon">②</div><div>Нажмите ссылку <span class="kbd">steam://connect</span> — игра подключится напрямую.</div></li>
+          <li class="li"><div class="icon">③</div><div>Либо добавьте IP:PORT в «Избранное» и подключайтесь.</div></li>
         </ol>
-        <p class="muted" data-i18n="how.ref">Izoh: Steam brauzer protokoli yordam beradi.</p>
+        <p class="muted">Примечание: используется браузерный протокол Steam.</p>
       </article>
 
       <!-- Rules -->
       <article class="card third">
-        <h3 data-i18n="rules.title">Qoidalar (qisqacha)</h3>
+        <h3>Правила (кратко)</h3>
         <ul class="list">
-          <li class="li"><div class="icon">✔</div><div data-i18n="rules.r1">Cheat, exploit, bug‑lardan foydalanmang.</div></li>
-          <li class="li"><div class="icon">✔</div><div data-i18n="rules.r2">Hurmat: haqorat, spam, reklama yo'q.</div></li>
-          <li class="li"><div class="icon">✔</div><div data-i18n="rules.r3">Jamoa vazifasini bajaring — ataylab xalaqit bermang.</div></li>
-          <li class="li"><div class="icon">✔</div><div data-i18n="rules.r4">Zombie: taqiqlangan bind/bug'lar yo'q (masalan, lasermine suiiste'mol).</div></li>
+          <li class="li"><div class="icon">✔</div><div>Запрещены читы, эксплойты и баг-абуз.</div></li>
+          <li class="li"><div class="icon">✔</div><div>Уважайте игроков: без оскорблений, спама и рекламы.</div></li>
+          <li class="li"><div class="icon">✔</div><div>Играйте по целям команды; не мешайте намеренно.</div></li>
+          <li class="li"><div class="icon">✔</div><div>Zombie: никаких запрещённых биндов/багов (например, лазермайн-абуз).</div></li>
         </ul>
-        <p class="muted" data-i18n="rules.more">To'liq qoidalar admin tomonidan belgilanadi, buzish — ogohlantirish/ban.</p>
+        <p class="muted">Полные правила определяются администрацией; нарушения — предупреждение/бан.</p>
       </article>
 
       <!-- Useful -->
       <article class="card third">
-        <h3 data-i18n="help.title">Foydali</h3>
+        <h3>Полезное</h3>
         <ul class="list">
-          <li class="li"><div class="icon">⌨</div><div><span data-i18n="help.bind">Bind misol:</span> <span class="kbd">bind F2 \"rebuy"</span></div></li>
-          <li class="li"><div class="icon">⚡</div><div data-i18n="help.net">Net: <span class="kbd">rate 25000</span>, <span class="kbd">cl_updaterate 101</span>, <span class="kbd">cl_cmdrate 101</span></div></li>
-          <li class="li"><div class="icon">⬇</div><div data-i18n="help.client">CS 1.6 toza klient havolasi:  </div><a class="download_link" href="https://all-cs.ru/sborki/CS16_Setup.exe">Скачать можно тут</a></li>
+          <li class="li"><div class="icon">⌨</div><div>Пример bind: <span class="kbd">bind F2 "rebuy"</span></div></li>
+          <li class="li"><div class="icon">⚡</div><div>Сеть: <span class="kbd">rate 25000</span>, <span class="kbd">cl_updaterate 101</span>, <span class="kbd">cl_cmdrate 101</span></div></li>
+          <li class="li"><div class="icon">⬇</div><div>Чистый клиент CS 1.6: </div><a class="download_link" href="https://all-cs.ru/sborki/CS16_Setup.exe">Скачать можно тут</a></li>
         </ul>
       </article>
 
       <!-- Contacts -->
-      <article class="card" style="display: flex; align-items:center;justify-content: center; width: 100%; flex-direction: column;">
-        <h3 data-i18n="contact.title">Aloqa & Jamiyat</h3>
+      <article class="card" style="display:flex;align-items:center;justify-content:center;width:100%;flex-direction:column;">
+        <h3>Контакты и Сообщество</h3>
         <div class="socials">
           <a class="social" id="tgLink" href="#" target="_blank" rel="noopener">Telegram</a>
           <a class="social" id="igLink" href="#" target="_blank" rel="noopener">Instagram</a>
@@ -219,95 +212,27 @@
   </footer>
 
   <script>
-    // ======= i18n =======
-    const i18n = {
-      uz: {
-        'brand.tag': 'Public & Zombie Server',
-        'ui.dark': 'Dark', 'ui.light': 'Light',
-        'nav.repo':'Jaloba',
-        "nav.rule":"Qoidalar",
-        'nav.shop': "Do'kon",
-        'hero.title': "CS 1.6 COOLZM — PUBLIC & ZOMBIE",
-        'hero.sub': 'Steam protokoli orqali tez ulaning, qoidalarni o\'qing va buyruqlarni bilib oling. Hammasi bir sahifada.',
-        'hero.badge1': 'UZ • RU • EN', 'hero.badge2': 'Dark / Light', 'hero.badge3': 'localStorage saqlash', 'hero.badge4': 'CS 1.6 HUD uslubi',
-        'server.ip': 'IP:', 'server.pass': 'Parol:', 'server.connect': 'Ulanish:',
-        'public.f1': "Klassik defuse/hostage, adolatli o'yin, anticheat.", 'public.f2': '/rtv /rs /vips /maps kabi buyruqlar.', 'public.f3': 'Tavsiya etilgan net_graph va rate sozlamalari.',
-        'zombie.f1': 'Biohazard Classic rejimi: tirik qoling yoki yuqtiring. Predmetlar bor.', 'zombie.f2': '/rtv /rs /vips /maps kabi buyruqlar.', 'zombie.f3': 'Lasermine, nofair buglardan foydalanish taqiqlanadi.',
-        'how.title': 'Qanday ulanish', 'how.s1': "Steam o'rnatilgan bo'lsin (CS 1.6 yoki GoldSrc mijoz).", 'how.s2': 'Ustidagi steam://connect havolasini bosing — o\'yin to\'g\'ridan‑to\'g\'ri serverga ulanadi.', 'how.s3': 'Yoki Favorites ga IP:PORT qo\'shing va ulaning.', 'how.ref': 'Izoh: Steam brauzer protokoli yordam beradi.',
-        'rules.title': 'Qoidalar (qisqacha)', 'rules.r1': "Cheat, exploit, bug‑lardan foydalanmang.", 'rules.r2': 'Hurmat: haqorat, spam, reklama yo\'q.', 'rules.r3': 'Jamoa vazifasini bajaring — ataylab xalaqit bermang.', 'rules.r4': "Zombie: taqiqlangan bind/bug'lar yo'q (masalan, lasermine suiiste'mol).", 'rules.more': 'To\'liq qoidalar admin tomonidan belgilanadi, buzish — ogohlantirish/ban.',
-        'help.title': 'Foydali', 'help.bind': 'Bind misol:', 'help.net': 'Net:', 'help.client': 'CS 1.6 toza klient havolasi:',
-        'contact.title': 'Aloqa & Jamiyat'
-      },
-      ru: {
-        'brand.tag': 'Паблик и Зомби серверы',
-        'ui.dark': 'Тёмная', 'ui.light': 'Светлая',
-        'nav.repo':'Репорт',
-        "nav.rule":"Правила",
-        'nav.shop': 'Магазин',
-        'hero.title': 'CS 1.6 COOLZM — ПАБЛИК & ЗОМБИ',
-        'hero.sub': 'Подключайтесь через протокол Steam, читайте правила и команды. Всё на одной странице.',
-        'hero.badge1': 'UZ • RU • EN', 'hero.badge2': 'Тёмная / Светлая', 'hero.badge3': 'Сохранение в localStorage', 'hero.badge4': 'Стиль HUD CS 1.6',
-        'server.ip': 'IP:', 'server.pass': 'Пароль:', 'server.connect': 'Подключение:',
-        'public.f1': 'Классический defuse/hostage, честная игра, античит.', 'public.f2': 'Команды: /rtv /rs /vips /maps.', 'public.f3': 'Рекомендуемые настройки rate/net_graph.',
-        'zombie.f1': 'Режим Biohazard Classic: выживай или заражай. Доступно предметы.', 'zombie.f2': 'Команды: /rtv /rs /vips /maps.', 'zombie.f3': 'Запрещены лазерные мины/баги.',
-        'how.title': 'Как подключиться', 'how.s1': 'Установите Steam (клиент CS 1.6/GoldSrc).', 'how.s2': 'Нажмите ссылку steam://connect — игра подключится напрямую.', 'how.s3': 'Либо добавьте IP:PORT в Избранное и подключайтесь.', 'how.ref': 'Примечание: помогает протокол браузера Steam.',
-        'rules.title': 'Правила (кратко)', 'rules.r1': 'Запрещены читы, эксплойты, баги.', 'rules.r2': 'Уважение: без оскорблений, спама, рекламы.', 'rules.r3': 'Выполняйте цели команды, не мешайте намеренно.', 'rules.r4': 'Zombie: никаких запрещённых биндов/багов (напр., лазермайн).', 'rules.more': 'Полные правила определяются администрацией. Нарушения — предупреждение/бан.',
-        'help.title': 'Полезное', 'help.bind': 'Пример bind:', 'help.net': 'Сеть:', 'help.client': 'Ссылка на чистый клиент CS 1.6: ',
-        'contact.title': 'Контакты и Сообщество'
-      },
-      en: {
-        'brand.tag': 'Public & Zombie Servers',
-        'ui.dark': 'Dark', 'ui.light': 'Light',
-        'nav.repo':'Report',
-        "nav.rule":"Rules",
-        'nav.shop': 'Shop',
-        'hero.title': 'CS 1.6 COOLZM — PUBLIC & ZOMBIE',
-        'hero.sub': 'Connect via Steam protocol, read rules & commands. All in one page.',
-        'hero.badge1': 'UZ • RU • EN', 'hero.badge2': 'Dark / Light', 'hero.badge3': 'localStorage persistence', 'hero.badge4': 'CS 1.6 HUD style',
-        'server.ip': 'IP:', 'server.pass': 'Password:', 'server.connect': 'Connect:',
-        'public.f1': 'Classic defuse/hostage, fair play, anticheat.', 'public.f2': 'Commands: /rtv /rs /vips /maps.', 'public.f3': 'Recommended rate/net_graph settings.',
-        'zombie.f1': 'Biohazard Classic: survive or infect. Available items.', 'zombie.f2': 'Commands: /rtv /rs /vips /maps.', 'zombie.f3': 'No laser-mine abuse / exploits.',
-        'how.title': 'How to connect', 'how.s1': 'Have Steam installed (CS 1.6/GoldSrc client).', 'how.s2': 'Click the steam://connect link to auto-join.', 'how.s3': 'Or add IP:PORT to Favorites then join.', 'how.ref': 'Note: Uses Steam browser protocol.',
-        'rules.title': 'Rules (short)', 'rules.r1': 'No cheats, exploits, or bug abuse.', 'rules.r2': 'Respect others: no insults, spam, ads.', 'rules.r3': 'Play the objective; no griefing/teaming.', 'rules.r4': 'Zombie: no forbidden binds/bugs (e.g., lasermine abuse).', 'rules.more': 'Full rules are set by admins; violations may lead to warn/ban.',
-        'help.title': 'Useful', 'help.bind': 'Bind example:', 'help.net': 'Net:', 'help.client': 'Clean CS 1.6 client link:',
-        'contact.title': 'Contacts & Community'
-      }
-    };
-
-    // ======= State =======
+    // ======= helpers/state =======
     const $ = (q, ctx=document) => ctx.querySelector(q);
     const $$ = (q, ctx=document) => Array.from(ctx.querySelectorAll(q));
     const state = {
-      lang: localStorage.getItem('lang') || 'uz',
       theme: localStorage.getItem('theme') || 'dark',
-      shop: localStorage.getItem('shop') || './shop.html',
-      rule: localStorage.getItem('rule') || './rules.html',
-      tg: localStorage.getItem('tg') || 'https://t.me/cs_chuvashi',
-      ig: localStorage.getItem('ig') || 'https://instagram.com/1mln_edits',
-      dc: localStorage.getItem('dc') || 'https://discord.gg/xTaE3C97',
+      shop:  localStorage.getItem('shop') || './shop.html',
+      rule:  localStorage.getItem('rule') || './rules.html',
+      tg:    localStorage.getItem('tg')   || 'https://t.me/cs_chuvashi',
+      ig:    localStorage.getItem('ig')   || 'https://instagram.com/1mln_edits',
+      dc:    localStorage.getItem('dc')   || 'https://discord.gg/xTaE3C97',
       servers: JSON.parse(localStorage.getItem('servers') || '{}') || {}
     };
 
     const defaults = {
       pub: { ip: '93.191.11.211', port: '27021', pass: '' },
-      zm:  { ip: '46.174.52.14', port: '27255', pass: '' }
+      zm:  { ip: '46.174.52.14',  port: '27255', pass: '' }
     };
 
     function applyTheme(){
       document.documentElement.setAttribute('data-theme', state.theme);
-      $('#theme').textContent = state.theme === 'dark' ? t('ui.dark') : t('ui.light');
-    }
-
-    function t(key){ return i18n[state.lang][key] || key; }
-
-    function applyI18n(){
-      document.documentElement.lang = state.lang;
-      $$('#lang option').forEach(o=>o.selected = (o.value===state.lang));
-      $$('[data-i18n]').forEach(el=>{
-        const k = el.getAttribute('data-i18n');
-        el.innerHTML = t(k);
-      });
-      $('#theme').textContent = state.theme === 'dark' ? t('ui.dark') : t('ui.light');
+      $('#theme').textContent = state.theme === 'dark' ? 'Light' : 'Dark';
     }
 
     function getServer(kind){
@@ -315,29 +240,32 @@
       return { ip: s.ip || defaults[kind].ip, port: s.port || defaults[kind].port, pass: s.pass || '' };
     }
 
+    function makeSteamLink(s){
+      // steam://connect/<IP>[:<port>][/<password>]
+      let url = `steam://connect/${s.ip}`;
+      if (s.port) url += `:${s.port}`;
+      if (s.pass) url += `/${s.pass}`;
+      return url;
+    }
+
     function renderServers(){
       const pub = getServer('pub');
-      const zm = getServer('zm');
+      const zm  = getServer('zm');
       $('#pubIp').textContent = pub.ip; $('#pubPort').textContent = pub.port; $('#pubPass').textContent = pub.pass || '—';
-      $('#zmIp').textContent = zm.ip;  $('#zmPort').textContent = zm.port;  $('#zmPass').textContent = zm.pass || '—';
+      $('#zmIp').textContent  = zm.ip;  $('#zmPort').textContent  = zm.port;  $('#zmPass').textContent  = zm.pass || '—';
       $('#pubLink').href = makeSteamLink(pub);
       $('#zmLink').href  = makeSteamLink(zm);
     }
 
-    function makeSteamLink(s){
-      // steam://connect/<IP>[:<port>][/<password>]
-      let url = `steam://connect/${s.ip}`;
-      if(s.port) url += `:${s.port}`;
-      if(s.pass) url += `/${s.pass}`;
-      return url;
-    }
-
-    // ======= EVENTS =======
+    // ======= init/events =======
     document.addEventListener('DOMContentLoaded', () => {
-      // init
-      document.documentElement.setAttribute('data-theme', state.theme);
-      applyI18n(); applyTheme(); renderServers();
-      $('#shop').href = state.shop; $('#tgLink').href = state.tg; $('#igLink').href = state.ig; $('#dcLink').href = state.dc;
+      document.documentElement.lang = 'ru';
+      applyTheme(); renderServers();
+
+      $('#shop').href   = state.shop;
+      $('#tgLink').href = state.tg;
+      $('#igLink').href = state.ig;
+      $('#dcLink').href = state.dc;
       $('#year').textContent = new Date().getFullYear();
 
       // theme toggle
@@ -345,11 +273,6 @@
         state.theme = (state.theme === 'dark') ? 'light' : 'dark';
         localStorage.setItem('theme', state.theme);
         applyTheme();
-      });
-
-      // language select
-      $('#lang').addEventListener('change', e => {
-        state.lang = e.target.value; localStorage.setItem('lang', state.lang); applyI18n();
       });
 
       // copy ip buttons
