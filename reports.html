@@ -64,9 +64,7 @@
       .schedule{flex-direction:column;align-items:flex-start}
       .status{width:100%;text-align:center}
       main{padding:20px 12px 56px}
-      /* переносим длинные ссылки аккуратно */
       .card a{overflow-wrap:anywhere;word-break:break-word}
-      /* увеличиваем область нажатия кнопок */
       .btn{padding:12px}
     }
 
@@ -110,7 +108,8 @@
         <div><b>Режим работы:</b> <b>24/7</b> Ташкент (UTC+5) / Москва (UTC+3).</div>
         <div class="schedule">
           <span class="muted">Статус сейчас:</span>
-          <span id="status" class="status">—</span>
+          <!-- фиксируем статус сразу в разметке, без мигания -->
+          <span id="status" class="status open">Приём ОТКРЫТ</span>
           <span id="now" class="muted"></span>
         </div>
       </div>
@@ -122,27 +121,22 @@
   <script>
   const $ = (q,c=document)=>c.querySelector(q);
   const state = { theme: localStorage.getItem('theme') || 'dark' };
+
   function applyTheme(){
     document.documentElement.setAttribute('data-theme', state.theme);
     $('#theme').textContent = state.theme==='dark' ? 'Dark' : 'Light';
   }
+
   function tzTime(tz){
     return new Intl.DateTimeFormat('ru-RU',{ timeZone: tz, hour:'2-digit', minute:'2-digit', second:'2-digit' }).format(new Date());
   }
-  function isOpenTashkent(){
-    const now = new Date();
-    const parts = new Intl.DateTimeFormat('ru-RU',{ timeZone:'Asia/Tashkent', hour:'2-digit', minute:'2-digit', hour12:false }).formatToParts(now);
-    const hh = Number(parts.find(p=>p.type==='hour').value);
-    const mm = Number(parts.find(p=>p.type==='minute').value);
-    const minutes = hh*60 + mm;
-    return minutes >= 7*60 && minutes < 15*60; // 07:00–14:59
-  }
+
+  // Статус всегда открыт; обновляем только время
   function renderStatus(){
-    const open = isOpenTashkent();
     const st = $('#status');
     const now = $('#now');
-    st.textContent = open ? 'Приём ОТКРЫТ' : 'Приём ЗАКРЫТ';
-    st.className = 'status ' + (open ? 'open' : 'closed');
+    st.textContent = 'Приём ОТКРЫТ';
+    st.className = 'status open';
     now.textContent = ` (Ташкент: ${tzTime('Asia/Tashkent')}, Москва: ${tzTime('Europe/Moscow')})`;
   }
 
@@ -155,7 +149,7 @@
     });
 
     renderStatus();
-    setInterval(renderStatus, 1000);
+    setInterval(renderStatus, 1); // обновляем часы
   });
   </script>
 </body>
