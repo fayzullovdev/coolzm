@@ -1,63 +1,150 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Вход - CoolZM</title>
-  <style>
-    body { background:#001f3f; color:white; font-family:sans-serif; text-align:center; margin-top:100px; }
-    input, button { display:block; margin:10px auto; padding:10px; border:none; border-radius:5px; }
-    input { width:250px; }
-    button { background:#00ff7f; color:black; font-weight:bold; cursor:pointer; }
-    a { color:#00ff7f; }
-  </style>
-</head>
-<body>
-  <h2>Вход в аккаунт</h2>
-  <input id="email" placeholder="Email" />
-  <input id="password" type="password" placeholder="Пароль" />
-  <button onclick="login()">Войти</button>
-  <p id="msg"></p>
-  <a href="register.html">Нет аккаунта? Регистрация</a>
-
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-    const supabase = createClient(
-      "https://mhpfuejghznibsqccakk.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc"
-    );
-
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const msg = document.getElementById('msg');
-
-    async function login() {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        msg.textContent = "❌ Заполните все поля!";
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <title>Вход - CoolZM</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="responsive-auth.css" />
+    <style>
+      body {
+        background: radial-gradient(circle at top left, #001f3f, #000814);
+        font-family: "Poppins", sans-serif;
+        color: #ffffff;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
       }
 
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("email", email)
-        .eq("password", password)
-        .single();
-
-      if (error || !data) {
-        msg.textContent = "❌ Неверный email или пароль";
-      } else {
-        msg.textContent = "✅ Добро пожаловать, " + data.name + "!";
-        localStorage.setItem("user", JSON.stringify(data));
-        setTimeout(() => window.location.href = "home.html", 1000);
+      .container {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(0, 255, 127, 0.4);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        width: 320px;
+        box-shadow: 0 0 30px rgba(0, 255, 127, 0.1);
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
       }
-    }
 
-    // 💡 Shartli yechim:
-    window.login = login;
-  </script>
-</body>
+      .container:hover {
+        box-shadow: 0 0 40px rgba(0, 255, 127, 0.25);
+      }
+
+      h2 {
+        color: #00ff7f;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+      }
+
+      input {
+        width: 85%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 14px;
+      }
+
+      input::placeholder {
+        color: #bbb;
+      }
+
+      button {
+        width: 90%;
+        padding: 12px;
+        background: #00ff7f;
+        color: #001f3f;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);
+      }
+
+      button:hover {
+        background: #00e675;
+        box-shadow: 0 0 20px rgba(0, 255, 127, 0.6);
+      }
+
+      p,
+      a {
+        margin-top: 15px;
+        color: #aaa;
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      a {
+        color: #00ff7f;
+        font-weight: 600;
+      }
+
+      #msg {
+        color: #00ff7f;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Вход в аккаунт</h2>
+      <input id="email" placeholder="Email" />
+      <input id="password" type="password" placeholder="Пароль" />
+      <button onclick="login()">Войти</button>
+      <p id="msg"></p>
+      <a href="register.html">Нет аккаунта? Регистрация</a>
+    </div>
+
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      const supabase = createClient(
+        "https://mhpfuejghznibsqccakk.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc"
+      );
+
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const msg = document.getElementById("msg");
+
+      async function login() {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (!email || !password) {
+          msg.textContent = "❌ Заполните все поля!";
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("email", email)
+          .eq("password", password)
+          .single();
+
+        if (error || !data) {
+          msg.textContent = "❌ Неверный email или пароль";
+        } else {
+          msg.textContent = "✅ Добро пожаловать, " + data.name + "!";
+          localStorage.setItem("user", JSON.stringify(data));
+          setTimeout(() => (window.location.href = "home.html"), 1000);
+        }
+      }
+
+      window.login = login;
+    </script>
+  </body>
 </html>

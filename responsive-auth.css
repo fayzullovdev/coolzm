@@ -1,0 +1,47 @@
+/* 📱 420px dan kichik ekranlar (telefonlar uchun) */
+@media (max-width: 420px) {
+  .container {
+    width: 90%;
+    padding: 30px 20px;
+  }
+
+  input, button {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  a {
+    font-size: 13px;
+  }
+}
+
+/* 📱 325px dan kichik ekranlar (kichik telefonlar, masalan iPhone SE) */
+@media (max-width: 325px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    width: 100%;
+    padding: 25px 15px;
+    border-radius: 15px;
+  }
+
+  input, button {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  p, a {
+    font-size: 12px;
+  }
+}
