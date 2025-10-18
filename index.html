@@ -20,11 +20,16 @@
   <a href="register.html">Нет аккаунта? Регистрация</a>
 
   <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
     const supabase = createClient(
       "https://mhpfuejghznibsqccakk.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc"
     );
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const msg = document.getElementById('msg');
 
     async function login() {
       const email = emailInput.value.trim();
@@ -51,9 +56,8 @@
       }
     }
 
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const msg = document.getElementById('msg');
+    // 💡 Shartli yechim:
+    window.login = login;
   </script>
 </body>
 </html>

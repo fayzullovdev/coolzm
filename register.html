@@ -21,11 +21,17 @@
   <a href="index.html">Уже есть аккаунт? Войти</a>
 
   <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
     const supabase = createClient(
       "https://mhpfuejghznibsqccakk.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc"
     );
+
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const msg = document.getElementById('msg');
 
     async function register() {
       const name = nameInput.value.trim();
@@ -45,14 +51,12 @@
         msg.textContent = "❌ Ошибка: " + error.message;
       } else {
         msg.textContent = "✅ Аккаунт создан!";
-        setTimeout(() => window.location.href = "index.html", 1000);
+        setTimeout(() => window.location.href = "index.html", 1200);
       }
     }
 
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const msg = document.getElementById('msg');
+    // 💡 Funksiyani global qilish:
+    window.register = register;
   </script>
 </body>
 </html>
