@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация | Coolzm</title>
+  <link rel="stylesheet" href="style-auth.css">
+</head>
+<body>
+  <div class="auth-box">
+    <h1 class="title">COOLZM</h1>
+    <h2>Создать аккаунт</h2>
+
+    <input type="text" id="name" placeholder="Имя">
+    <input type="email" id="email" placeholder="Электронная почта" required>
+    <input type="password" id="password" placeholder="Пароль" required>
+    <button onclick="register()">Зарегистрироваться</button>
+    <p id="msg"></p>
+
+    <p class="switch">
+      Уже есть аккаунт? <a href="login.html">Войти</a>
+    </p>
+  </div>
+
+  <script>
+    async function register() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("msg");
+
+      const res = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
+      const data = await res.json();
+      if (data.error) {
+        msg.textContent = data.error;
+        msg.style.color = "red";
+      } else {
+        msg.textContent = "✅ Регистрация прошла успешно!";
+        msg.style.color = "#00ff7f";
+        setTimeout(() => window.location.href = "index.html", 1500);
+      }
+    }
+  </script>
+</body>
+</html>
