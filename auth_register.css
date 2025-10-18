@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+/* ========== ROOT VARIABLES ========== */
+:root {
+  --bg: radial-gradient(circle at top left, #02111f, #000814);
+  --accent: #00ff9d;
+  --accent-dark: #009f69;
+  --accent-glow: rgba(0, 255, 157, 0.6);
+  --text: #f0f3f7;
+  --muted: #a0a8b6;
+  --panel: rgba(255, 255, 255, 0.06);
+  --radius: 18px;
+  --font: "Poppins", sans-serif;
+  --shadow: 0 0 30px rgba(0, 255, 127, 0.1);
+}
+
+/* ========== BASE ========== */
+* {
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+}
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ========== BACKGROUND ANIMATION ========== */
+body::before {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  top: -20%;
+  left: -20%;
+  background: radial-gradient(circle at 30% 30%, rgba(0,255,157,0.08), transparent 70%),
+              radial-gradient(circle at 70% 70%, rgba(0,255,157,0.05), transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
+  animation: backgroundShift 12s infinite alternate ease-in-out;
+}
+@keyframes backgroundShift {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* ========== CONTAINER ========== */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 360px;
+  background: var(--panel);
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  padding: 48px 40px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+/* moving glowing border */
+.container::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: inherit;
+  background: linear-gradient(60deg, transparent, rgba(0,255,157,0.15), transparent);
+  animation: borderFlow 6s linear infinite;
+  z-index: -1;
+}
+@keyframes borderFlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ========== HEADER ========== */
+h2 {
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 0 12px var(--accent-glow);
+  margin-bottom: 28px;
+  letter-spacing: 0.5px;
+}
+
+/* ========== INPUTS ========== */
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(0,255,157,0.3);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  box-shadow: inset 0 0 10px rgba(0,255,157,0.05);
+  transition: 0.3s;
+}
+input:focus {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 12px var(--accent-glow), inset 0 0 5px rgba(0,255,157,0.2);
+  transform: scale(1.02);
+}
+input::placeholder {
+  color: var(--muted);
+}
+
+/* ========== BUTTON ========== */
+button {
+  width: 90%;
+  padding: 12px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+  color: #001f3f;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--accent-glow);
+  position: relative;
+  overflow: hidden;
+}
+button::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: skewX(-20deg);
+  transition: 0.5s;
+}
+button:hover::before {
+  left: 125%;
+}
+button:hover {
+  box-shadow: 0 0 25px rgba(0,255,157,0.8);
+  transform: translateY(-2px);
+}
+
+/* ========== MESSAGE ========== */
+#msg {
+  margin-top: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ========== LINKS ========== */
+a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 14px;
+  transition: 0.3s;
+}
+a:hover {
+  text-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ========== FOOTER TEXT ========== */
+p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 480px) {
+  .container {
+    width: 90%;
+    padding: 36px 28px;
+  }
+  h2 {
+    font-size: 22px;
+  }
+  button {
+    font-size: 14px;
+  }
+}

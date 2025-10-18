@@ -5,57 +5,261 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>COOLZM — Жалобы временно недоступны</title>
   <meta name="color-scheme" content="dark light"/>
+
   <style>
-    :root{
-      --bg:#0b0f14; --card:#101722; --text:#e5f1ff; --muted:#9ab0c9;
-      --primary:#00ff7f; --accent:#00c2ff; --border:#1d2a3a;
-      --shadow:0 12px 30px rgba(0,0,0,.35); --radius:16px; --ring:0 0 0 3px rgba(0,255,127,.25)
+    /* === BASE THEME === */
+    :root {
+      --bg: #050810;
+      --card: #0b1120;
+      --text: #e9f6ff;
+      --muted: #9cb6cf;
+      --primary: #00ffb3;
+      --accent: #009dff;
+      --border: rgba(255,255,255,.1);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --neon: 0 0 10px rgba(0,255,191,.6), 0 0 25px rgba(0,194,255,.3);
+      --blur-bg: rgba(255,255,255,0.04);
     }
-    [data-theme="light"]{
-      --bg:#f7fafc; --card:#fff; --text:#0e1a2a; --muted:#5b6b7f; --primary:#0ea5e9; --accent:#16a34a; --border:#e5eaf0;
-      --shadow:0 10px 24px rgba(2,6,23,.08); --ring:0 0 0 3px rgba(14,165,233,.22)
+
+    [data-theme="light"] {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #637588;
+      --primary: #0ea5e9;
+      --accent: #16a34a;
+      --border: rgba(0,0,0,.08);
+      --neon: none;
+      --blur-bg: rgba(255,255,255,0.8);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:
-        radial-gradient(1200px 900px at 10% -10%,rgba(0,194,255,.08),transparent 60%),
-        radial-gradient(1000px 700px at 110% -20%,rgba(0,255,127,.08),transparent 60%),
-        var(--bg);
-      color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,"Noto Sans","Segoe UI Emoji";
-      line-height:1.6;
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
     }
-    a{color:var(--primary);text-decoration:none}
-    a:hover{text-decoration:underline}
 
-    header{position:sticky;top:0;z-index:10;backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--border);background:rgba(6,10,16,.6)}
-    [data-theme="light"] header{background:rgba(255,255,255,.7)}
-    .nav{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:900}
-    .logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:var(--shadow);color:#001b1b;font-weight:1000}
-    .logo img{width:100%;border-radius:12px}
-    .controls{display:flex;gap:8px;align-items:center}
-    .btn{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:40px}
-    .btn:hover{filter:brightness(1.05)}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
 
-    main{max-width:980px;margin:0 auto;padding:24px 16px 60px}
-    .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:24px;box-shadow:var(--shadow)}
-    .headline{font-size:clamp(26px,3.6vw,40px);font-weight:1000;margin:0 0 12px}
-    .sub{color:var(--muted);margin:0 0 20px}
+    /* === DYNAMIC AURORA BACKGROUND === */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(800px 600px at 10% -20%, rgba(0,255,191,0.08), transparent 70%),
+                  radial-gradient(1000px 800px at 110% -10%, rgba(0,194,255,0.08), transparent 70%);
+      z-index: -2;
+      animation: aurora 18s infinite alternate ease-in-out;
+      filter: blur(120px);
+    }
 
-    .notice{border:1px dashed var(--border);border-radius:12px;padding:12px;display:grid;gap:10px}
-    .schedule{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-    .status{padding:6px 10px;border-radius:999px;border:1px solid var(--border)}
-    .status.open{background:rgba(0,255,127,.1)}
-    .status.closed{background:rgba(255,80,80,.12);color:#ff8080}
+    @keyframes aurora {
+      0% { transform: translateY(0) scale(1); opacity: .9; }
+      50% { transform: translateY(-5%) scale(1.1); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: .9; }
+    }
 
-    @media (max-width:420px){
-      .nav{grid-template-columns:1fr;gap:8px}
-      .controls{justify-content:flex-start;flex-wrap:wrap}
-      .controls .btn{width:100%;height:auto}
-      main{padding:20px 12px 56px}
+    /* === HEADER === */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px) saturate(180%);
+      background: rgba(10,16,25,.55);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 0 25px rgba(0,0,0,.4);
+      animation: slideDown 0.8s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: default;
+      perspective: 800px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 20px;
+      color: #001b1b;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: var(--neon);
+      transform: rotateY(0deg);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateY(0deg); }
+      50% { transform: translateY(-6px) rotateY(8deg); }
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--blur-bg);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.3s;
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, rgba(0,255,191,.3), rgba(0,194,255,.4));
+      transition: .4s;
+    }
+
+    .btn:hover::after { left: 0; }
+    .btn:hover { color: var(--primary); box-shadow: var(--neon); }
+
+    /* === MAIN === */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 16px 80px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: all .4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 0 40px rgba(0,194,255,.15);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: conic-gradient(from 0deg, rgba(0,255,191,.07), transparent 60%);
+      z-index: 0;
+      animation: spin 14s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .card > * { position: relative; z-index: 1; }
+
+    h1.headline {
+      font-size: clamp(26px,3.8vw,44px);
+      font-weight: 900;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(0,255,191,.3);
+    }
+
+    p.sub {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .notice {
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: grid;
+      gap: 10px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .notice:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0,194,255,.1);
+    }
+
+    .schedule { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .status {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      box-shadow: inset 0 0 6px rgba(255,255,255,.08);
+      transition: 0.3s;
+    }
+
+    .status.closed {
+      background: rgba(255,80,80,.12);
+      color: #ff8080;
+      border-color: rgba(255,80,80,.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: rgba(10,16,25,.4);
+      font-size: 14px;
+    }
+
+    @media (max-width:480px) {
+      .nav { flex-direction: column; gap: 8px; }
+      .controls { flex-wrap: wrap; justify-content: center; }
+      .btn { width: 100%; }
+      .card { padding: 24px; }
     }
   </style>
 </head>
@@ -63,15 +267,15 @@
   <header>
     <nav class="nav">
       <div class="brand">
-        <div class="logo"><img src="./logo.png" alt=""></div>
+        <div class="logo">C</div>
         <div>
-          <div style="font-weight:800">COOLZM</div>
+          <div style="font-weight:800;font-size:18px;">COOLZM</div>
           <div class="muted">Жалобы</div>
         </div>
       </div>
       <div class="controls">
         <button id="theme" class="btn">Dark</button>
-        <a href="./home.html" class="btn">← На сайт</a>
+        <a href="./home.html" style="text-decoration: none;" class="btn">← На сайт</a>
       </div>
     </nav>
   </header>
@@ -82,7 +286,7 @@
       <p class="sub">
         В данный момент <b>бот временно не работает</b>.  
         Подача жалоб через сайт и Telegram-бот <b>приостановлена</b>.  
-        Мы уже занимаемся устранением неполадок
+        Мы уже занимаемся устранением неполадок.
       </p>
 
       <div class="notice">
@@ -94,40 +298,43 @@
         </div>
       </div>
 
-      <p>Telegram-бот: <a href="https://t.me/coolzmreport_bot" target="_blank" rel="noopener">@coolzmreport_bot</a></p>
+      <p style="margin-top:20px;">
+        Telegram-бот: <a href="https://t.me/coolzmreport_bot" target="_blank" rel="noopener">@coolzmreport_bot</a>
+      </p>
     </section>
   </main>
 
+  <footer>© 2025 COOLZM. Все права защищены.</footer>
+
   <script>
-  const $ = (q,c=document)=>c.querySelector(q);
-  const state = { theme: localStorage.getItem('theme') || 'dark' };
+    const $ = (q,c=document)=>c.querySelector(q);
+    const state = { theme: localStorage.getItem('theme') || 'dark' };
 
-  function applyTheme(){
-    document.documentElement.setAttribute('data-theme', state.theme);
-    $('#theme').textContent = state.theme==='dark' ? 'Light' : 'Dark';
-  }
+    function applyTheme(){
+      document.documentElement.setAttribute('data-theme', state.theme);
+      $('#theme').textContent = state.theme==='dark' ? 'Light' : 'Dark';
+    }
 
-  function tzTime(tz){
-    return new Intl.DateTimeFormat('ru-RU',{ timeZone: tz, hour:'2-digit', minute:'2-digit', second:'2-digit' }).format(new Date());
-  }
+    function tzTime(tz){
+      return new Intl.DateTimeFormat('ru-RU',{ timeZone: tz, hour:'2-digit', minute:'2-digit', second:'2-digit' }).format(new Date());
+    }
 
-  function renderStatus(){
-    $('#status').textContent = 'Приём ЗАКРЫТ';
-    $('#status').className = 'status closed';
-    $('#now').textContent = ` (Ташкент: ${tzTime('Asia/Tashkent')}, Москва: ${tzTime('Europe/Moscow')})`;
-  }
+    function renderStatus(){
+      $('#status').textContent = 'Приём ЗАКРЫТ';
+      $('#status').className = 'status closed';
+      $('#now').textContent = ` (Ташкент: ${tzTime('Asia/Tashkent')}, Москва: ${tzTime('Europe/Moscow')})`;
+    }
 
-  document.addEventListener('DOMContentLoaded', ()=>{
-    applyTheme();
-    $('#theme').addEventListener('click',()=>{
-      state.theme = state.theme==='dark' ? 'light' : 'dark';
-      localStorage.setItem('theme', state.theme);
+    document.addEventListener('DOMContentLoaded', ()=>{
       applyTheme();
+      $('#theme').addEventListener('click',()=>{
+        state.theme = state.theme==='dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', state.theme);
+        applyTheme();
+      });
+      renderStatus();
+      setInterval(renderStatus, 1000);
     });
-
-    renderStatus();
-    setInterval(renderStatus, 1000);
-  });
   </script>
 </body>
 </html>
