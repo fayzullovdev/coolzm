@@ -2,45 +2,58 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Вход | Coolzm</title>
-  <link rel="stylesheet" href="style-auth.css">
+  <title>Вход - CoolZM</title>
+  <style>
+    body { background:#001f3f; color:white; font-family:sans-serif; text-align:center; margin-top:100px; }
+    input, button { display:block; margin:10px auto; padding:10px; border:none; border-radius:5px; }
+    input { width:250px; }
+    button { background:#00ff7f; color:black; font-weight:bold; cursor:pointer; }
+    a { color:#00ff7f; }
+  </style>
 </head>
 <body>
-  <div class="auth-box">
-    <h1 class="title">COOLZM</h1>
-    <h2>Вход в аккаунт</h2>
+  <h2>Вход в аккаунт</h2>
+  <input id="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Пароль" />
+  <button onclick="login()">Войти</button>
+  <p id="msg"></p>
+  <a href="register.html">Нет аккаунта? Регистрация</a>
 
-    <input type="email" id="email" placeholder="Электронная почта" required>
-    <input type="password" id="password" placeholder="Пароль" required>
-    <button onclick="login()">Войти</button>
-    <p id="msg"></p>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    const supabase = createClient(
+      "https://mhpfuejghznibsqccakk.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc"
+    );
 
-    <p class="switch">
-      Нет аккаунта? <a href="register.html">Зарегистрироваться</a>
-    </p>
-  </div>
-
-  <script>
     async function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const msg = document.getElementById("msg");
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
 
-      const res = await fetch("/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (data.error) {
-        msg.textContent = data.error;
-        msg.style.color = "red";
+      if (!email || !password) {
+        msg.textContent = "❌ Заполните все поля!";
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("email", email)
+        .eq("password", password)
+        .single();
+
+      if (error || !data) {
+        msg.textContent = "❌ Неверный email или пароль";
       } else {
-        msg.textContent = data.message;
-        msg.style.color = "#00ff7f";
-        setTimeout(() => window.location.href = "home.html", 1500);
+        msg.textContent = "✅ Добро пожаловать, " + data.name + "!";
+        localStorage.setItem("user", JSON.stringify(data));
+        setTimeout(() => window.location.href = "home.html", 1000);
       }
     }
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const msg = document.getElementById('msg');
   </script>
 </body>
 </html>
