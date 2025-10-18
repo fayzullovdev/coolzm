@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>COOLZM — Жалобы 24/7 через Telegram-бота</title>
+  <title>COOLZM — Жалобы временно недоступны</title>
   <meta name="color-scheme" content="dark light"/>
   <style>
     :root{
@@ -49,36 +49,13 @@
     .schedule{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
     .status{padding:6px 10px;border-radius:999px;border:1px solid var(--border)}
     .status.open{background:rgba(0,255,127,.1)}
-    .status.closed{background:rgba(255,80,80,.12)}
+    .status.closed{background:rgba(255,80,80,.12);color:#ff8080}
 
-    /* ===== Мобильные стили: <= 420px ===== */
     @media (max-width:420px){
       .nav{grid-template-columns:1fr;gap:8px}
-      .brand{gap:10px}
-      .logo{width:34px;height:34px;border-radius:10px}
       .controls{justify-content:flex-start;flex-wrap:wrap}
       .controls .btn{width:100%;height:auto}
-      .headline{font-size:24px;margin-bottom:8px}
-      .card{padding:16px}
-      .notice{gap:8px}
-      .schedule{flex-direction:column;align-items:flex-start}
-      .status{width:100%;text-align:center}
       main{padding:20px 12px 56px}
-      .card a{overflow-wrap:anywhere;word-break:break-word}
-      .btn{padding:12px}
-    }
-
-    /* ===== Очень узкие экраны: <= 360px ===== */
-    @media (max-width:360px){
-      .nav{gap:6px}
-      .brand{gap:8px}
-      .logo{width:28px;height:28px;border-radius:8px}
-      .headline{font-size:21px}
-      .btn{font-size:14px;padding:10px 12px}
-      .controls .btn{padding:12px}
-      .sub{font-size:.95rem}
-      .status{font-size:.95rem}
-      main{padding:18px 10px 48px}
     }
   </style>
 </head>
@@ -102,14 +79,17 @@
   <main>
     <section class="card">
       <h1 class="headline">Отправка жалоб</h1>
-      <p class="sub">Подача жалоб через сайт отключена. Жалобы принимаются <b>круглосуточно (24/7)</b> через <b>Telegram-бота</b> ниже.</p>
+      <p class="sub">
+        В данный момент <b>бот временно не работает</b>.  
+        Подача жалоб через сайт и Telegram-бот <b>приостановлена</b>.  
+        Мы уже занимаемся устранением неполадок
+      </p>
 
       <div class="notice">
-        <div><b>Режим работы:</b> <b>24/7</b> Ташкент (UTC+5) / Москва (UTC+3).</div>
+        <div><b>Режим работы:</b> Временно <b>недоступен</b></div>
         <div class="schedule">
           <span class="muted">Статус сейчас:</span>
-          <!-- фиксируем статус сразу в разметке, без мигания -->
-          <span id="status" class="status open">Приём ОТКРЫТ</span>
+          <span id="status" class="status closed">Приём ЗАКРЫТ</span>
           <span id="now" class="muted"></span>
         </div>
       </div>
@@ -131,13 +111,10 @@
     return new Intl.DateTimeFormat('ru-RU',{ timeZone: tz, hour:'2-digit', minute:'2-digit', second:'2-digit' }).format(new Date());
   }
 
-  // Статус всегда открыт; обновляем только время
   function renderStatus(){
-    const st = $('#status');
-    const now = $('#now');
-    st.textContent = 'Приём ОТКРЫТ';
-    st.className = 'status open';
-    now.textContent = ` (Ташкент: ${tzTime('Asia/Tashkent')}, Москва: ${tzTime('Europe/Moscow')})`;
+    $('#status').textContent = 'Приём ЗАКРЫТ';
+    $('#status').className = 'status closed';
+    $('#now').textContent = ` (Ташкент: ${tzTime('Asia/Tashkent')}, Москва: ${tzTime('Europe/Moscow')})`;
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
@@ -149,7 +126,7 @@
     });
 
     renderStatus();
-    setInterval(renderStatus, 1); // обновляем часы
+    setInterval(renderStatus, 1000);
   });
   </script>
 </body>
