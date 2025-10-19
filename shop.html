@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>COOLZM — Магазин (VIP / ADMIN / PLAYER MODEL)</title>
     <meta name="color-scheme" content="dark light" />
-    
+
     <style>
       /* ====== ТЕМА / БАЗА ====== */
       :root {
@@ -581,7 +581,7 @@
       const $ = (q, c = document) => c.querySelector(q);
       const $$ = (q, c = document) => Array.from(c.querySelectorAll(q));
 
-      // Тема
+      // ===== Тема =====
       const state = { theme: localStorage.getItem("theme") || "dark" };
       function applyTheme() {
         document.documentElement.setAttribute("data-theme", state.theme);
@@ -589,51 +589,158 @@
       }
       document.documentElement.setAttribute("data-theme", state.theme);
 
-      // Функция раскрытия с анимацией
+      // ===== Функция раскрытия =====
       function togglePanel(btn) {
         const targetSel = btn.getAttribute("data-toggle");
         const panel = document.querySelector(targetSel);
         const expanded = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", String(!expanded));
         btn.textContent = expanded ? "Подробнее…" : "Скрыть";
-        if (!expanded) {
-          // открыть
-          panel.classList.add("open");
-        } else {
-          // закрыть
-          panel.classList.remove("open");
-        }
+        panel.classList.toggle("open", !expanded);
       }
 
       document.addEventListener("DOMContentLoaded", () => {
         applyTheme();
 
-        // Переключение темы
+        // ===== Переключение темы =====
         $("#theme").addEventListener("click", () => {
           state.theme = state.theme === "dark" ? "light" : "dark";
           localStorage.setItem("theme", state.theme);
           applyTheme();
         });
 
-        // Кнопки «Купить» -> Telegram
+        // ===== Подробнее… =====
+        $$("[data-toggle]").forEach((btn) => {
+          const panel = document.querySelector(btn.getAttribute("data-toggle"));
+          panel.classList.remove("open");
+          btn.addEventListener("click", () => togglePanel(btn));
+        });
+
+        // ===== ВСПЛЫВАЮЩАЯ ФОРМА ПОКУПКИ =====
+        const modal = document.getElementById("buyModal");
+        const productSpan = document.getElementById("buyProductName");
+        let currentProduct = "";
+
+        // При клике на Купить
         $$("[data-buy]").forEach((btn) => {
           btn.addEventListener("click", () => {
-            const product = btn.dataset.buy;
-            const text = encodeURIComponent(`Покупка: ${product}`);
-            const url = `https://t.me/${DEV_TG}?text=${text}`;
-            window.open(url, "_blank");
+            currentProduct = btn.dataset.buy;
+            productSpan.textContent = currentProduct;
+            modal.style.display = "grid";
           });
         });
 
-        // Кнопки «Подробнее…»
-        $$("[data-toggle]").forEach((btn) => {
-          // старт: всё свернуто
-          const targetSel = btn.getAttribute("data-toggle");
-          const panel = document.querySelector(targetSel);
-          panel.classList.remove("open"); // на всякий
-          btn.addEventListener("click", () => togglePanel(btn));
+        // Кнопка "Отменить"
+        $("#cancelBuy").addEventListener("click", () => {
+          modal.style.display = "none";
+          $("#nick").value = "";
+          $("#steam").value = "";
+          $("#comment").value = "";
+        });
+
+        // Кнопка "Продолжить"
+        $("#continueBuy").addEventListener("click", () => {
+          const nick = $("#nick").value.trim();
+          const steam = $("#steam").value.trim();
+          const comment = $("#comment").value.trim();
+
+          if (!nick) {
+            alert("Пожалуйста, укажите игровой ник.");
+            return;
+          }
+
+          const message = encodeURIComponent(
+            `Покупка: ${currentProduct}\nНик: ${nick}\nSteam ID: ${
+              steam || "—"
+            }\nКомментарий: ${comment || "—"}`
+          );
+          const url = `https://t.me/${DEV_TG}?text=${message}`;
+          window.open(url, "_blank");
+
+          modal.style.display = "none";
         });
       });
     </script>
+
+    <!-- === МОДАЛЬНОЕ ОКНО ПОКУПКИ === -->
+    <div
+      id="buyModal"
+      style="
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+      "
+    >
+      <div
+        style="
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          padding: 24px;
+          width: 90%;
+          max-width: 400px;
+          animation: zoomIn 0.25s ease;
+        "
+      >
+        <h3 style="margin-top: 0">Покупка <span id="buyProductName"></span></h3>
+
+        <label>Игровой ник:</label>
+        <input
+          id="nick"
+          type="text"
+          placeholder="Ваш ник"
+          style="
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+          "
+        />
+
+        <label>Steam ID (если есть):</label>
+        <input
+          id="steam"
+          type="text"
+          placeholder="STEAM_1:1:123456"
+          style="
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+          "
+        />
+
+        <label>Комментарий / пожелания:</label>
+        <textarea
+          id="comment"
+          rows="3"
+          placeholder="Например: хочу модель синего цвета"
+          style="
+            width: 100%;
+            margin-bottom: 16px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+          "
+        ></textarea>
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end">
+          <button id="cancelBuy" class="btn">Отменить</button>
+          <button id="continueBuy" class="btn primary">Продолжить</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
