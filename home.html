@@ -345,6 +345,7 @@
       // ======= helpers/state =======
       const $ = (q, ctx = document) => ctx.querySelector(q);
       const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q));
+
       const state = {
         theme: localStorage.getItem("theme") || "dark",
         shop: localStorage.getItem("shop") || "./shop.html",
@@ -360,11 +361,13 @@
         zm: { ip: "46.174.52.14", port: "27255", pass: "" },
       };
 
+      // === Theme ===
       function applyTheme() {
         document.documentElement.setAttribute("data-theme", state.theme);
         $("#theme").textContent = state.theme === "dark" ? "Light" : "Dark";
       }
 
+      // === Servers ===
       function getServer(kind) {
         const s = state.servers[kind] || defaults[kind];
         return {
@@ -375,7 +378,6 @@
       }
 
       function makeSteamLink(s) {
-        // steam://connect/<IP>[:<port>][/<password>]
         let url = `steam://connect/${s.ip}`;
         if (s.port) url += `:${s.port}`;
         if (s.pass) url += `/${s.pass}`;
@@ -394,99 +396,36 @@
         $("#pubLink").href = makeSteamLink(pub);
         $("#zmLink").href = makeSteamLink(zm);
       }
-      // === 🌐 Глобальный счётчик посещений + онлайн ===
-      const COUNTER_NAMESPACE = "coolzm";
-      const COUNTER_KEY = "site_visits";
-      const ONLINE_KEY = "site_online";
 
-      // Увеличиваем общее число посещений
-      fetch(`https://api.countapi.xyz/hit/${COUNTER_NAMESPACE}/${COUNTER_KEY}`)
-        .then((res) => res.json())
-        .then((data) => {
-          renderCounters(data.value);
-        })
-        .catch((err) => console.error("Ошибка счётчика:", err));
-
-      // === Онлайн-счётчик ===
-      // Имитация “онлайн”: сохраняем отметку активности в localStorage
-      function updateOnline() {
-        localStorage.setItem("coolzm_last_active", Date.now());
-      }
-
-      function countOnline() {
-        let online = 0;
-        const now = Date.now();
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key.startsWith("coolzm_last_active")) {
-            const last = parseInt(localStorage.getItem(key));
-            if (now - last < 3 * 60 * 1000) online++; // 3 минуты активности
-          }
-        }
-        return online;
-      }
-
-      // Обновляем свою метку раз в 20 секунд
-      const uid = Math.random().toString(36).slice(2);
-      const key = `coolzm_last_active_${uid}`;
-      updateOnline();
-      setInterval(updateOnline, 20000);
-
-      // === Отрисовка блока в футере ===
-      function renderCounters(total) {
-        const footer = document.querySelector("footer");
-        if (!footer) return;
-
-        const wrapper = document.createElement("div");
-        wrapper.id = "visitCounter";
-        wrapper.innerHTML = `
-    <span class="counter-icon">👥</span>
-    <span class="counter-label">Посещений:</span>
-    <span class="counter-value total">${total.toLocaleString()}</span>
-    <span class="counter-sep"> | </span>
-    <span class="counter-label">Онлайн:</span>
-    <span class="counter-value online">...</span>
-  `;
-        footer.appendChild(wrapper);
-
-        // Анимация появления
-        setTimeout(() => wrapper.classList.add("visible"), 100);
-
-        // Обновление числа онлайн
-        setInterval(() => {
-          const onlineNow = countOnline();
-          const el = document.querySelector(".counter-value.online");
-          if (el) el.textContent = onlineNow.toString();
-        }, 5000);
-      }
       // ======= init/events =======
       document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.lang = "ru";
         applyTheme();
         renderServers();
-        // === Burger menyu ===
+
+        // === Burger Menu ===
         const burger = document.getElementById("burger");
         const menu = document.getElementById("menu");
-
         burger.addEventListener("click", () => {
           burger.classList.toggle("active");
           menu.classList.toggle("active");
         });
 
+        // === Links ===
         $("#shop").href = state.shop;
         $("#tgLink").href = state.tg;
         $("#igLink").href = state.ig;
         $("#dcLink").href = state.dc;
         $("#year").textContent = new Date().getFullYear();
 
-        // theme toggle
+        // === Theme Toggle ===
         $("#theme").addEventListener("click", () => {
           state.theme = state.theme === "dark" ? "light" : "dark";
           localStorage.setItem("theme", state.theme);
           applyTheme();
         });
 
-        // copy ip buttons
+        // === Copy IP buttons ===
         $$("[data-copy]").forEach((btn) =>
           btn.addEventListener("click", () => {
             const target = $(btn.getAttribute("data-copy"));
@@ -496,13 +435,65 @@
             setTimeout(() => btn.classList.remove("focus"), 600);
           })
         );
+
+        // === 🌐 СЧЁТЧИК ПОСЕЩЕНИЙ + ОНЛАЙН ===
+        const COUNTER_NAMESPACE = "coolzm";
+        const COUNTER_KEY = "site_visits";
+
+        const footer = document.querySelector("footer");
+        const counter = document.createElement("div");
+        counter.id = "visitCounter";
+        counter.innerHTML = `
+    <span class="counter-icon">👥</span>
+    <span class="counter-label">Посещений:</span>
+    <span class="counter-value total">—</span>
+    <span class="counter-sep"> | </span>
+    <span class="counter-label">Онлайн:</span>
+    <span class="counter-value online">—</span>
+  `;
+        footer.appendChild(counter);
+
+        // === Загружаем общее число посещений ===
+        fetch(
+          `https://api.countapi.xyz/hit/${COUNTER_NAMESPACE}/${COUNTER_KEY}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            $(".counter-value.total").textContent = data.value.toLocaleString();
+            counter.classList.add("visible");
+          })
+          .catch((err) => console.error("Ошибка счётчика:", err));
+
+        // === Онлайн-счётчик ===
+        const uid = Math.random().toString(36).slice(2);
+        const key = `coolzm_last_active_${uid}`;
+        const updateOnline = () => localStorage.setItem(key, Date.now());
+        updateOnline();
+        setInterval(updateOnline, 20000);
+
+        function countOnline() {
+          const now = Date.now();
+          let count = 0;
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k.startsWith("coolzm_last_active_")) {
+              const last = parseInt(localStorage.getItem(k));
+              if (now - last < 180000) count++;
+            }
+          }
+          return count;
+        }
+
+        setInterval(() => {
+          $(".counter-value.online").textContent = countOnline().toString();
+        }, 5000);
       });
-      // === Foydalanuvchi holati ===
+
+      // === Проверка пользователя ===
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
-        window.location.href = "index.html"; // Login sahifaga qaytar
+        window.location.href = "index.html";
       } else {
-        // "Выйти" tugmasiga ismni qo‘shamiz
         const logoutBtn = document.querySelector(
           'a[href="./index.html"], a[href="index.html"]'
         );
