@@ -708,3 +708,387 @@ footer {
   0%,100% { text-shadow: 0 0 10px rgba(0,255,191,.4), 0 0 25px rgba(0,194,255,.25); }
   50% { text-shadow: 0 0 20px rgba(0,255,191,.8), 0 0 40px rgba(0,194,255,.45); }
 }
+/* ===============================
+   💬 COOLZM CHAT — стиль в тему сайта
+   =============================== */
+
+#chatWidget {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+  font-family: "Poppins", "Inter", sans-serif;
+  color: #e8fef6;
+}
+
+/* === Кнопка чата (правый нижний угол) === */
+#chatToggle {
+  background: radial-gradient(circle at center, #00ffbf 0%, #00a977 100%);
+  border: none;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #021e14;
+  box-shadow: 0 0 20px rgba(0, 255, 191, 0.5);
+  transition: 0.25s ease;
+}
+#chatToggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 28px rgba(0, 255, 191, 0.7);
+}
+
+/* === Окно чата === */
+#chatBox {
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  height: 440px;
+  background: rgba(8, 12, 10, 0.96);
+  border: 1px solid rgba(0, 255, 191, 0.3);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transform: translateY(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Показываем окно */
+#chatBox.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* === Заголовок === */
+#chatHeader {
+  background: linear-gradient(90deg, rgba(0, 255, 191, 0.12), rgba(0, 255, 127, 0.08));
+  border-bottom: 1px solid rgba(0, 255, 191, 0.25);
+  color: #00ffbf;
+  text-align: center;
+  font-weight: 700;
+  padding: 10px 0;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+/* === Область сообщений === */
+#chatMessages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00ffbf #0c0c0c;
+}
+
+#chatMessages::-webkit-scrollbar {
+  width: 7px;
+}
+#chatMessages::-webkit-scrollbar-thumb {
+  background-color: #00ffbf;
+  border-radius: 4px;
+}
+#chatMessages::-webkit-scrollbar-track {
+  background: #0c0c0c;
+}
+
+/* === Сообщения === */
+#chatMessages .msg {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(0, 255, 191, 0.05);
+  box-shadow: 0 0 5px rgba(0, 255, 127, 0.1);
+  transition: 0.2s ease;
+  animation: fadeIn 0.25s ease;
+}
+#chatMessages .msg b {
+  color: #00ffbf;
+  font-weight: 600;
+}
+#chatMessages .msg:hover {
+  background: rgba(0, 255, 191, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Поле ввода === */
+#chatInputArea {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  border-top: 1px solid rgba(0, 255, 191, 0.25);
+}
+
+#chatInput {
+  flex: 1;
+  padding: 8px 10px;
+  background: #0d0d0d;
+  border: 1px solid rgba(0, 255, 191, 0.3);
+  border-radius: 8px;
+  color: #f0fdf9;
+  outline: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+#chatInput:focus {
+  border-color: #00ffbf;
+  box-shadow: 0 0 8px rgba(0, 255, 191, 0.3);
+}
+
+#sendBtn {
+  margin-left: 6px;
+  background: linear-gradient(135deg, #00ffbf, #00b87f);
+  border: none;
+  border-radius: 8px;
+  color: #021e14;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+#sendBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 255, 191, 0.5);
+}
+/* === Chat open upward === */
+#chatWidget {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  flex-direction: column-reverse; /* 👈 теперь чат будет открываться вверх */
+  align-items: flex-end;
+  z-index: 9999;
+}
+
+/* Анимация открытия вверх */
+#chatBox {
+  transform: translateY(20px); /* Начало — немного ниже кнопки */
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+#chatBox.active {
+  opacity: 1;
+  transform: translateY(-10px); /* 👈 теперь открывается вверх */
+  pointer-events: auto;
+}
+/* === CHAT RESPONSIVE === */
+
+/* --- до 380px --- */
+@media (max-width: 380px) {
+  #chatBox {
+    width: 300px;
+    height: 400px;
+    border-radius: 12px;
+  }
+  #chatHeader {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+  #chatMessages {
+    padding: 8px;
+  }
+  #chatInput {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  #sendBtn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+  #chatToggle {
+    width: 54px;
+    height: 54px;
+    font-size: 22px;
+  }
+}
+
+/* --- до 340px --- */
+@media (max-width: 340px) {
+  #chatBox {
+    width: 280px;
+    height: 380px;
+  }
+  #chatHeader {
+    font-size: 13px;
+  }
+  #chatMessages .msg {
+    font-size: 13px;
+    padding: 5px 8px;
+  }
+  #chatInput {
+    font-size: 12.5px;
+  }
+  #sendBtn {
+    font-size: 12.5px;
+    padding: 6px 9px;
+  }
+  #chatToggle {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
+
+/* --- до 330px --- */
+@media (max-width: 330px) {
+  #chatBox {
+    width: 260px;
+    height: 360px;
+  }
+  #chatHeader {
+    font-size: 12.5px;
+  }
+  #chatMessages {
+    padding: 6px;
+  }
+  #chatMessages .msg {
+    font-size: 12.5px;
+    padding: 4px 7px;
+  }
+  #chatInput {
+    font-size: 12px;
+    padding: 6px 7px;
+  }
+  #sendBtn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+  #chatToggle {
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+  }
+}
+
+/* --- до 320px --- */
+@media (max-width: 320px) {
+  #chatBox {
+    width: 245px;
+    height: 340px;
+  }
+  #chatHeader {
+    font-size: 12px;
+  }
+  #chatMessages .msg {
+    font-size: 12px;
+  }
+  #chatInput {
+    font-size: 11.5px;
+    padding: 5px 7px;
+  }
+  #sendBtn {
+    font-size: 11.5px;
+    padding: 5px 7px;
+  }
+  #chatToggle {
+    width: 46px;
+    height: 46px;
+    font-size: 18px;
+  }
+}
+
+/* --- до 310px --- */
+@media (max-width: 310px) {
+  #chatBox {
+    width: 230px;
+    height: 320px;
+  }
+  #chatHeader {
+    font-size: 11.5px;
+    padding: 6px 0;
+  }
+  #chatMessages .msg {
+    font-size: 11.5px;
+    padding: 3px 6px;
+  }
+  #chatInput {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  #sendBtn {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  #chatToggle {
+    width: 44px;
+    height: 44px;
+    font-size: 17px;
+  }
+}
+/* === CHAT MOBILE FIX: scroll ishlashi uchun === */
+@media (max-width: 380px) {
+  #chatWidget {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    align-items: center;
+  }
+
+  #chatBox {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh; /* to‘liq ekran */
+    border-radius: 0;
+    margin: 0;
+    background: rgba(5, 10, 8, 0.98);
+    border: none;
+    box-shadow: none;
+    z-index: 99999;
+    overflow-y: auto; /* 👈 scroll yo‘lga qo‘yiladi */
+  }
+
+  #chatHeader {
+    position: sticky;
+    top: 0;
+    background: rgba(0, 255, 191, 0.15);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  #chatMessages {
+    padding: 12px;
+    overflow-y: visible; /* ichidagi ham skrollanadi */
+  }
+
+  #chatInputArea {
+    position: sticky;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 10px;
+    border-top: 1px solid rgba(0, 255, 191, 0.25);
+  }
+
+  #chatInput {
+    font-size: 14px;
+  }
+
+  #chatToggle {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 54px;
+    height: 54px;
+    z-index: 100000;
+  }
+}

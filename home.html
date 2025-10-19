@@ -457,7 +457,8 @@
 
       // === ЗАМЕНИ ЭТИ ДВЕ СТРОКИ НА СВОИ ДАННЫЕ ===
       const SUPABASE_URL = "https://mhpfuejghznibsqccakk.supabase.co";
-      const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc";
+      const SUPABASE_ANON =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc";
 
       const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
@@ -518,6 +519,111 @@
 
       // Запускаем показ визитов
       bumpAndShow();
+    </script>
+    <!-- 💬 ГЛОБАЛЬНЫЙ ЧАТ -->
+    <div id="chatWidget">
+      <button id="chatToggle">💬</button>
+
+      <div id="chatBox" class="hidden">
+        <div id="chatHeader">Глобальный чат</div>
+        <div id="chatMessages"></div>
+        <div id="chatInputArea">
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Введите сообщение..."
+          />
+          <button id="sendBtn">➤</button>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+      const SUPABASE_URL = "https://mhpfuejghznibsqccakk.supabase.co";
+      const SUPABASE_ANON =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc";
+
+      const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+      const chatBox = document.getElementById("chatBox");
+      const chatToggle = document.getElementById("chatToggle");
+      const sendBtn = document.getElementById("sendBtn");
+      const chatInput = document.getElementById("chatInput");
+      const chatMessages = document.getElementById("chatMessages");
+
+      chatToggle.addEventListener("click", () => {
+        chatBox.classList.toggle("active");
+      });
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      const username = user?.name || "Гость";
+
+      // === ЗАГРУЗКА ИСТОРИИ ===
+      async function loadMessages() {
+        const { data, error } = await sb
+          .from("chat_messages")
+          .select("*")
+          .order("created_at", { ascending: true })
+          .limit(100);
+
+        if (error) {
+          console.error("Ошибка при загрузке:", error.message);
+          return;
+        }
+        chatMessages.innerHTML = "";
+        data.forEach(renderMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function renderMessage(msg) {
+        const el = document.createElement("div");
+        el.classList.add("msg");
+        el.innerHTML = `<b>${msg.username}:</b> ${msg.text}`;
+        chatMessages.appendChild(el);
+      }
+
+      // === ОТПРАВКА ===
+      async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        chatInput.value = "";
+
+        const { error } = await sb
+          .from("chat_messages")
+          .insert([{ username, text }]);
+
+        if (error) console.error("Ошибка отправки:", error.message);
+      }
+
+      sendBtn.addEventListener("click", sendMessage);
+      chatInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendMessage();
+      });
+
+      // === LIVE-ОБНОВЛЕНИЕ (в реальном времени) ===
+      const channel = sb
+        .channel("realtime:public:chat_messages")
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "chat_messages",
+          },
+          (payload) => {
+            renderMessage(payload.new);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+        )
+        .subscribe((status) => {
+          if (status === "SUBSCRIBED") {
+            console.log("✅ Подписка на чат активна");
+          }
+        });
+
+      // === ПЕРВОНАЧАЛЬНАЯ ЗАГРУЗКА ===
+      loadMessages();
     </script>
   </body>
 </html>
