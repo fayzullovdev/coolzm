@@ -547,3 +547,95 @@ footer {
     font-size: 11px;
   }
 }
+/* ===== Giveaway Modal ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal:not(.hidden) {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: linear-gradient(145deg, #111, #181818);
+  border: 1px solid #00ff7f55;
+  border-radius: 16px;
+  padding: 2rem;
+  width: min(90%, 420px);
+  box-shadow: 0 0 40px #00ff7f33, inset 0 0 20px #00ff7f22;
+  text-align: center;
+  color: #f1f1f1;
+  animation: popup 0.4s ease forwards;
+}
+@keyframes popup {
+  from { transform: scale(0.85) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.modal-content h2 {
+  font-size: 1.4rem;
+  color: #00ff7f;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px #00ff7f;
+}
+
+.modal-content p {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 1.2rem;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #00ff7f88;
+  background: #111;
+  color: #fff;
+  outline: none;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s;
+}
+.modal-content input:focus {
+  border-color: #00ff7f;
+  box-shadow: 0 0 10px #00ff7f55;
+}
+
+.modal-content .btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #00ff7f;
+  background: transparent;
+  color: #00ff7f;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.modal-content .btn.primary {
+  background: #00ff7f;
+  color: #000;
+  border: none;
+}
+.modal-content .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 14px #00ff7f99;
+}
+
+/* Animatsion chiqqanda fon shiftlab turishi */
+@keyframes neonPulse {
+  0%, 100% { box-shadow: 0 0 20px #00ff7f44, inset 0 0 10px #00ff7f22; }
+  50% { box-shadow: 0 0 40px #00ff7f99, inset 0 0 20px #00ff7f44; }
+}
+.modal-content {
+  animation: popup 0.4s ease forwards, neonPulse 3s infinite alternate;
+}
