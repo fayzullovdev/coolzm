@@ -14,8 +14,7 @@
     />
     <meta name="color-scheme" content="dark light" />
     <link rel="icon" href="logo.png" />
-    
-    
+
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {
@@ -67,14 +66,22 @@
     <header>
       <nav class="nav">
         <div class="brand">
-          <div class="logo"><img style="width: 48px;height: 48px;" src="./logo.png" alt="" /></div>
+          <div class="logo">
+            <img style="width: 48px; height: 48px" src="./logo.png" alt="" />
+          </div>
           <div>
             <div style="font-weight: 800">COOLZM</div>
             <div class="muted">Паблик и Зомби серверы</div>
           </div>
         </div>
-        <div class="controls">
-          <!-- Язык убран, интерфейс зафиксирован на русском -->
+
+        <!-- ✅ BURGER TUGMASI -->
+        <button id="burger" class="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+
+        <!-- ✅ Asl menyu -->
+        <div class="controls" id="menu">
           <button id="theme" class="btn">Тёмная</button>
           <a class="btn primary" href="./reports.html">Жалобы</a>
           <a
@@ -91,13 +98,13 @@
             >Магазин</a
           >
           <a
-            id="shop"
+            id="logout"
+            class="btn primary"
             style="
               background: transparent;
               border-color: #00ff7f;
               color: #00ff7f;
             "
-            class="btn primary"
             href="./index.html"
             rel="noopener"
             >Выйти</a
@@ -108,7 +115,6 @@
 
     <main>
       <section class="hero scanline">
-        
         <div class="headline">CS 1.6 COOLZM — ПАБЛИК & ЗОМБИ</div>
         <p class="sub">
           Подключайтесь через протокол Steam, читайте правила и команды. Всё на
@@ -394,6 +400,14 @@
         document.documentElement.lang = "ru";
         applyTheme();
         renderServers();
+        // === Burger menyu ===
+        const burger = document.getElementById("burger");
+        const menu = document.getElementById("menu");
+
+        burger.addEventListener("click", () => {
+          burger.classList.toggle("active");
+          menu.classList.toggle("active");
+        });
 
         $("#shop").href = state.shop;
         $("#tgLink").href = state.tg;
