@@ -27,6 +27,7 @@
       box-shadow: 0 0 30px rgba(0, 255, 127, 0.1);
       backdrop-filter: blur(8px);
       transition: all 0.3s ease;
+      position: relative;
     }
 
     .container:hover {
@@ -39,10 +40,15 @@
       letter-spacing: 1px;
     }
 
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+      margin: 10px auto;
+    }
+
     input {
-      width: 85%;
-      padding: 12px;
-      margin: 10px 0;
+      width: 100%;
+      padding: 12px 40px 12px 12px;
       border-radius: 10px;
       border: none;
       outline: none;
@@ -53,6 +59,23 @@
 
     input::placeholder {
       color: #bbb;
+    }
+
+    .eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #00ff7f;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .eye:hover {
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(0, 255, 127, 0.7);
     }
 
     button {
@@ -90,6 +113,11 @@
       color: #00ff7f;
       font-weight: bold;
       margin-top: 10px;
+      min-height: 20px;
+    }
+
+    #msg.error {
+      color: #ff6b6b;
     }
   </style>
 </head>
@@ -98,7 +126,19 @@
     <h2>Регистрация</h2>
     <input id="name" placeholder="Имя" />
     <input id="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Пароль" />
+
+    <!-- Parol -->
+    <div class="input-wrapper">
+      <input id="password" type="password" placeholder="Пароль" />
+      <span class="eye" id="togglePassword">👁️</span>
+    </div>
+
+    <!-- Parolni tasdiqlash -->
+    <div class="input-wrapper">
+      <input id="confirm" type="password" placeholder="Повторите пароль" />
+      <span class="eye" id="toggleConfirm">👁️</span>
+    </div>
+
     <button onclick="register()">Создать аккаунт</button>
     <p id="msg"></p>
     <a href="index.html">Уже есть аккаунт? Войти</a>
@@ -115,15 +155,27 @@
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirm');
     const msg = document.getElementById('msg');
 
     async function register() {
       const name = nameInput.value.trim();
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
+      const confirm = confirmInput.value.trim();
 
-      if (!name || !email || !password) {
+      msg.classList.remove('error');
+      msg.textContent = "";
+
+      if (!name || !email || !password || !confirm) {
         msg.textContent = "❌ Заполните все поля!";
+        msg.classList.add('error');
+        return;
+      }
+
+      if (password !== confirm) {
+        msg.textContent = "❌ Пароли не совпадают!";
+        msg.classList.add('error');
         return;
       }
 
@@ -133,6 +185,7 @@
 
       if (error) {
         msg.textContent = "❌ Ошибка: " + error.message;
+        msg.classList.add('error');
       } else {
         msg.textContent = "✅ Аккаунт создан!";
         setTimeout(() => window.location.href = "index.html", 1200);
@@ -140,6 +193,21 @@
     }
 
     window.register = register;
+
+    // 👁️ Ko‘zchalar ishlashi
+    function togglePasswordVisibility(toggleId, inputId) {
+      const toggle = document.getElementById(toggleId);
+      const input = document.getElementById(inputId);
+
+      toggle.addEventListener("click", () => {
+        const type = input.getAttribute("type") === "password" ? "text" : "password";
+        input.setAttribute("type", type);
+        toggle.textContent = type === "password" ? "👁️" : "🙈";
+      });
+    }
+
+    togglePasswordVisibility("togglePassword", "password");
+    togglePasswordVisibility("toggleConfirm", "confirm");
   </script>
 </body>
 </html>

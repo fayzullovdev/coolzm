@@ -7,8 +7,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style-auth.css">
-    
+    <link rel="stylesheet" href="style-auth.css" />
+
     <style>
       body {
         background: radial-gradient(circle at top left, #001f3f, #000814);
@@ -31,6 +31,7 @@
         box-shadow: 0 0 30px rgba(0, 255, 127, 0.1);
         backdrop-filter: blur(8px);
         transition: all 0.3s ease;
+        position: relative;
       }
 
       .container:hover {
@@ -43,9 +44,15 @@
         letter-spacing: 1px;
       }
 
+      .input-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
       input {
-        width: 85%;
-        padding: 12px;
+        width: 100%;
+        padding: 12px 40px 12px 12px;
         margin: 10px 0;
         border-radius: 10px;
         border: none;
@@ -57,6 +64,23 @@
 
       input::placeholder {
         color: #bbb;
+      }
+
+      .eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #00ff7f;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+      }
+
+      .eye:hover {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(0, 255, 127, 0.7);
       }
 
       button {
@@ -102,7 +126,10 @@
     <div class="container">
       <h2>Вход в аккаунт</h2>
       <input id="email" placeholder="Email" />
-      <input id="password" type="password" placeholder="Пароль" />
+      <div class="input-wrapper">
+        <input id="password" type="password" placeholder="Пароль" />
+        <span class="eye" id="togglePassword">👁️</span>
+      </div>
       <button onclick="login()">Войти</button>
       <p id="msg"></p>
       <a href="register.html">Нет аккаунта? Регистрация</a>
@@ -146,6 +173,17 @@
       }
 
       window.login = login;
+
+      // 🔥 Toggle password visibility
+      const togglePassword = document.getElementById("togglePassword");
+      togglePassword.addEventListener("click", () => {
+        const type =
+          passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+
+        togglePassword.textContent =
+          type === "password" ? "👁️" : "🙈"; // Ko‘rsatish / yashirish
+      });
     </script>
   </body>
 </html>
