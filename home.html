@@ -342,6 +342,29 @@
     </footer>
 
     <script>
+      const COUNTER_NAMESPACE = "coolzm";
+      const COUNTER_KEY = "site_visits";
+
+      fetch(`https://api.countapi.xyz/hit/${COUNTER_NAMESPACE}/${COUNTER_KEY}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const footer = document.querySelector("footer");
+          if (!footer) return;
+
+          // Создаём блок счётчика
+          const counter = document.createElement("div");
+          counter.id = "visitCounter";
+          counter.innerHTML = `
+      <span class="counter-icon">👥</span>
+      <span class="counter-label">Посещений:</span>
+      <span class="counter-value">${data.value.toLocaleString()}</span>
+    `;
+          footer.appendChild(counter);
+
+          // Анимация появления
+          setTimeout(() => counter.classList.add("visible"), 100);
+        })
+        .catch((err) => console.error("Ошибка счётчика:", err));
       // ======= helpers/state =======
       const $ = (q, ctx = document) => ctx.querySelector(q);
       const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q));
