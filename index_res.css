@@ -683,3 +683,28 @@ footer {
     text-shadow: 0 0 20px rgba(0,255,191,0.8), 0 0 40px rgba(0,194,255,0.45);
   }
 }
+/* Счётчик в футере */
+#visitCounter {
+  margin-top: 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--primary);
+  text-shadow: 0 0 8px rgba(0,255,191,.4), 0 0 20px rgba(0,194,255,.25);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all .6s ease;
+}
+#visitCounter.visible { opacity: 1; transform: translateY(0); }
+.counter-icon { margin-right: 6px; filter: drop-shadow(0 0 6px rgba(0,255,191,.5)); }
+.counter-label { color: var(--muted); font-weight: 600; margin-right: 4px; }
+.counter-value {
+  color: var(--accent); font-weight: 900;
+  text-shadow: 0 0 10px rgba(0,255,191,.5), 0 0 25px rgba(0,194,255,.25);
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+.counter-sep { color: var(--muted); margin: 0 6px; opacity: .7; }
+@keyframes pulseGlow {
+  0%,100% { text-shadow: 0 0 10px rgba(0,255,191,.4), 0 0 25px rgba(0,194,255,.25); }
+  50% { text-shadow: 0 0 20px rgba(0,255,191,.8), 0 0 40px rgba(0,194,255,.45); }
+}

@@ -345,7 +345,6 @@
       // ======= helpers/state =======
       const $ = (q, ctx = document) => ctx.querySelector(q);
       const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q));
-
       const state = {
         theme: localStorage.getItem("theme") || "dark",
         shop: localStorage.getItem("shop") || "./shop.html",
@@ -361,13 +360,11 @@
         zm: { ip: "46.174.52.14", port: "27255", pass: "" },
       };
 
-      // === Theme ===
       function applyTheme() {
         document.documentElement.setAttribute("data-theme", state.theme);
         $("#theme").textContent = state.theme === "dark" ? "Light" : "Dark";
       }
 
-      // === Servers ===
       function getServer(kind) {
         const s = state.servers[kind] || defaults[kind];
         return {
@@ -378,6 +375,7 @@
       }
 
       function makeSteamLink(s) {
+        // steam://connect/<IP>[:<port>][/<password>]
         let url = `steam://connect/${s.ip}`;
         if (s.port) url += `:${s.port}`;
         if (s.pass) url += `/${s.pass}`;
@@ -402,30 +400,29 @@
         document.documentElement.lang = "ru";
         applyTheme();
         renderServers();
-
-        // === Burger Menu ===
+        // === Burger menyu ===
         const burger = document.getElementById("burger");
         const menu = document.getElementById("menu");
+
         burger.addEventListener("click", () => {
           burger.classList.toggle("active");
           menu.classList.toggle("active");
         });
 
-        // === Links ===
         $("#shop").href = state.shop;
         $("#tgLink").href = state.tg;
         $("#igLink").href = state.ig;
         $("#dcLink").href = state.dc;
         $("#year").textContent = new Date().getFullYear();
 
-        // === Theme Toggle ===
+        // theme toggle
         $("#theme").addEventListener("click", () => {
           state.theme = state.theme === "dark" ? "light" : "dark";
           localStorage.setItem("theme", state.theme);
           applyTheme();
         });
 
-        // === Copy IP buttons ===
+        // copy ip buttons
         $$("[data-copy]").forEach((btn) =>
           btn.addEventListener("click", () => {
             const target = $(btn.getAttribute("data-copy"));
@@ -435,65 +432,13 @@
             setTimeout(() => btn.classList.remove("focus"), 600);
           })
         );
-
-        // === 🌐 СЧЁТЧИК ПОСЕЩЕНИЙ + ОНЛАЙН ===
-        const COUNTER_NAMESPACE = "coolzm";
-        const COUNTER_KEY = "site_visits";
-
-        const footer = document.querySelector("footer");
-        const counter = document.createElement("div");
-        counter.id = "visitCounter";
-        counter.innerHTML = `
-    <span class="counter-icon">👥</span>
-    <span class="counter-label">Посещений:</span>
-    <span class="counter-value total">—</span>
-    <span class="counter-sep"> | </span>
-    <span class="counter-label">Онлайн:</span>
-    <span class="counter-value online">—</span>
-  `;
-        footer.appendChild(counter);
-
-        // === Загружаем общее число посещений ===
-        fetch(
-          `https://api.countapi.xyz/hit/${COUNTER_NAMESPACE}/${COUNTER_KEY}`
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            $(".counter-value.total").textContent = data.value.toLocaleString();
-            counter.classList.add("visible");
-          })
-          .catch((err) => console.error("Ошибка счётчика:", err));
-
-        // === Онлайн-счётчик ===
-        const uid = Math.random().toString(36).slice(2);
-        const key = `coolzm_last_active_${uid}`;
-        const updateOnline = () => localStorage.setItem(key, Date.now());
-        updateOnline();
-        setInterval(updateOnline, 20000);
-
-        function countOnline() {
-          const now = Date.now();
-          let count = 0;
-          for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            if (k.startsWith("coolzm_last_active_")) {
-              const last = parseInt(localStorage.getItem(k));
-              if (now - last < 180000) count++;
-            }
-          }
-          return count;
-        }
-
-        setInterval(() => {
-          $(".counter-value.online").textContent = countOnline().toString();
-        }, 5000);
       });
-
-      // === Проверка пользователя ===
+      // === Foydalanuvchi holati ===
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
-        window.location.href = "index.html";
+        window.location.href = "index.html"; // Login sahifaga qaytar
       } else {
+        // "Выйти" tugmasiga ismni qo‘shamiz
         const logoutBtn = document.querySelector(
           'a[href="./index.html"], a[href="index.html"]'
         );
@@ -505,6 +450,74 @@
           });
         }
       }
+    </script>
+    <!-- Supabase JS (v2) -->
+    <script type="module">
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+      // === ЗАМЕНИ ЭТИ ДВЕ СТРОКИ НА СВОИ ДАННЫЕ ===
+      const SUPABASE_URL = "https://mhpfuejghznibsqccakk.supabase.co";
+      const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocGZ1ZWpnaHpuaWJzcWNjYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3Njg0MDcsImV4cCI6MjA3NjM0NDQwN30.9FSwygoMxA98_zbZQE6hVQ_MJxOTMUbqGTjo68AkKXc";
+
+      const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+      // Рендер блока в футере (если ты уже создаёшь #visitCounter — пропусти этот блок)
+      const footer = document.querySelector("footer");
+      let counterEl = document.getElementById("visitCounter");
+      if (!counterEl) {
+        counterEl = document.createElement("div");
+        counterEl.id = "visitCounter";
+        counterEl.innerHTML = `
+      <span class="counter-icon">👥</span>
+      <span class="counter-label">Посещений:</span>
+      <span class="counter-value total">—</span>
+      <span class="counter-sep"> | </span>
+      <span class="counter-label">Онлайн:</span>
+      <span class="counter-value online">—</span>
+    `;
+        footer.appendChild(counterEl);
+      }
+
+      // === 1) Глобальные посещения: атомарный инкремент + получение значения
+      async function bumpAndShow() {
+        // "home" можно заменить на любую страницу: 'home', 'shop', 'rules', либо 'global'
+        const { data, error } = await sb.rpc("increment_counter", {
+          counter_id: "global",
+        });
+        if (error) {
+          console.error("increment_counter error:", error);
+          return;
+        }
+        document.querySelector(".counter-value.total").textContent =
+          Number(data).toLocaleString();
+        counterEl.classList.add("visible");
+      }
+
+      // === 2) Онлайн прямо сейчас: Presence-канал
+      const uid = crypto.randomUUID
+        ? crypto.randomUUID()
+        : Math.random().toString(36).slice(2);
+      const channel = sb.channel("online-room", {
+        config: { presence: { key: uid } },
+      });
+
+      channel.on("presence", { event: "sync" }, () => {
+        // Структура: { userKey: [{meta...},{...}], ... }
+        const state = channel.presenceState();
+        const online = Object.keys(state).length;
+        const el = document.querySelector(".counter-value.online");
+        if (el) el.textContent = String(online);
+      });
+
+      await channel.subscribe(async (status) => {
+        if (status === "SUBSCRIBED") {
+          // Начинаем «светиться» в онлайне
+          await channel.track({ online_at: new Date().toISOString() });
+        }
+      });
+
+      // Запускаем показ визитов
+      bumpAndShow();
     </script>
   </body>
 </html>
