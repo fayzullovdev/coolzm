@@ -342,29 +342,6 @@
     </footer>
 
     <script>
-      const COUNTER_NAMESPACE = "coolzm";
-      const COUNTER_KEY = "site_visits";
-
-      fetch(`https://api.countapi.xyz/hit/${COUNTER_NAMESPACE}/${COUNTER_KEY}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const footer = document.querySelector("footer");
-          if (!footer) return;
-
-          // Создаём блок счётчика
-          const counter = document.createElement("div");
-          counter.id = "visitCounter";
-          counter.innerHTML = `
-      <span class="counter-icon">👥</span>
-      <span class="counter-label">Посещений:</span>
-      <span class="counter-value">${data.value.toLocaleString()}</span>
-    `;
-          footer.appendChild(counter);
-
-          // Анимация появления
-          setTimeout(() => counter.classList.add("visible"), 100);
-        })
-        .catch((err) => console.error("Ошибка счётчика:", err));
       // ======= helpers/state =======
       const $ = (q, ctx = document) => ctx.querySelector(q);
       const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q));
@@ -417,7 +394,71 @@
         $("#pubLink").href = makeSteamLink(pub);
         $("#zmLink").href = makeSteamLink(zm);
       }
+      // === 🌐 Глобальный счётчик посещений + онлайн ===
+      const COUNTER_NAMESPACE = "coolzm";
+      const COUNTER_KEY = "site_visits";
+      const ONLINE_KEY = "site_online";
 
+      // Увеличиваем общее число посещений
+      fetch(`https://api.countapi.xyz/hit/${COUNTER_NAMESPACE}/${COUNTER_KEY}`)
+        .then((res) => res.json())
+        .then((data) => {
+          renderCounters(data.value);
+        })
+        .catch((err) => console.error("Ошибка счётчика:", err));
+
+      // === Онлайн-счётчик ===
+      // Имитация “онлайн”: сохраняем отметку активности в localStorage
+      function updateOnline() {
+        localStorage.setItem("coolzm_last_active", Date.now());
+      }
+
+      function countOnline() {
+        let online = 0;
+        const now = Date.now();
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith("coolzm_last_active")) {
+            const last = parseInt(localStorage.getItem(key));
+            if (now - last < 3 * 60 * 1000) online++; // 3 минуты активности
+          }
+        }
+        return online;
+      }
+
+      // Обновляем свою метку раз в 20 секунд
+      const uid = Math.random().toString(36).slice(2);
+      const key = `coolzm_last_active_${uid}`;
+      updateOnline();
+      setInterval(updateOnline, 20000);
+
+      // === Отрисовка блока в футере ===
+      function renderCounters(total) {
+        const footer = document.querySelector("footer");
+        if (!footer) return;
+
+        const wrapper = document.createElement("div");
+        wrapper.id = "visitCounter";
+        wrapper.innerHTML = `
+    <span class="counter-icon">👥</span>
+    <span class="counter-label">Посещений:</span>
+    <span class="counter-value total">${total.toLocaleString()}</span>
+    <span class="counter-sep"> | </span>
+    <span class="counter-label">Онлайн:</span>
+    <span class="counter-value online">...</span>
+  `;
+        footer.appendChild(wrapper);
+
+        // Анимация появления
+        setTimeout(() => wrapper.classList.add("visible"), 100);
+
+        // Обновление числа онлайн
+        setInterval(() => {
+          const onlineNow = countOnline();
+          const el = document.querySelector(".counter-value.online");
+          if (el) el.textContent = onlineNow.toString();
+        }, 5000);
+      }
       // ======= init/events =======
       document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.lang = "ru";
